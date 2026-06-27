@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درباره ما | [نام فروشگاه شما]</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .about-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .about-header p {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+
+        .main-story {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            text-align: justify;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-top: 5px solid #3498db;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-bakery { border-top-color: #e74c3c; } /* رنگ بخش قنادی */
+        .card-tailor { border-top-color: #9b59b6; } /* رنگ بخش خیاطی */
+        .card-stationery { border-top-color: #f1c40f; } /* رنگ بخش لوازم التحریر */
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: #2c3e50;
+            color: #fff;
+            padding: 40px 20px;
+            border-radius: 12px;
+        }
+
+        .cta-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #e74c3c;
+            color: #fff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .about-header h1 { font-size: 2rem; }
+            .about-container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="about-container">
+        
+        <!-- هدر صفحه -->
+        <header class="about-header">
+            <h1>به دنیای رنگارنگ ما خوش آمدید</h1>
+            <p>داستان شکل گیری برش</p>
+        </header>
+
+        <!-- متن اصلی داستان برند -->
+        <section class="main-story">
+            <p>شاید در نگاه اول ترکیب <strong>قنادی، خیاطی و لوازم‌التحریر</strong> کمی عجیب به نظر برسد، اما داستان ما دقیقاً از همین‌جا شروع شد؛ از یک ایده ساده برای راحت‌تر کردن زندگی شما. ما در <strong>برش</strong> تصمیم گرفتیم تمام آن چیزهایی که برای داشتن یک روز شیرین، یک پوشش آراسته و یک ذهن خلاق نیاز دارید را یک‌جا جمع کنیم تا در زمان و هزینه‌های شما صرفه‌جویی شود.</p>
+        </section>
+
+        <!-- کارت‌های سه کاره فروشگاه -->
+        <section class="services-grid">
+            
+            <!-- بخش قنادی -->
+            <div class="service-card card-bakery">
+                <h3>🍰 طعم‌های به‌یادماندنی (قنادی)</h3>
+                <p>در بخش قنادی،با استفاده از لوازم قنادی برش  روزت را با شیرینی‌ها و کیک‌های خانگی، تازه و خوش‌عطری که آماده کردی ، شیرین می‌کنی.</p>
+            </div>
+
+            <!-- بخش خیاطی -->
+            <div class="service-card card-tailor">
+                <h3>✂️ هنر و ظرافت (خیاطی)</h3>
+                <p>در بخش خیاطی، با لوازم و خدمات شخصی‌سازی‌شده، به استایلت روح می‌بخشی.</p>
+            </div>
+
+            <!-- بخش لوازم التحریر -->
+            <div class="service-card card-stationery">
+                <h3>✏️ خلاقیت و یادگیری (لوازم‌التحریر)</h3>
+                <p>در بخش لوازم‌التحریر، با دنیایی از ابزارهای رنگارنگ برای مدرسه، دانشگاه و میز کار خود مجهز می‌شوید. هر آنچه برای نوشتن و خلق کردن نیاز دارید، اینجاست.</p>
+            </div>
+
+        </section>
+
+        <!-- بخش دعوت به اقدام (پایانی) -->
+        <section class="cta-section">
+            <h2>امروز چطور می‌توانیم به شما کمک کنیم؟</h2>
+            <p>از شما دعوت می‌کنیم از بخش‌های مختلف فروشگاه آنلاین ما دیدن فرمایید.</p>
+            <a href="[لینک صفحه فروشگاه شما]" class="cta-button">ورود به فروشگاه</a>
+        </section>
+
+    </div>
+
+</body>
+</html>
