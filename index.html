@@ -646,6 +646,15 @@
       background-color: #ff4b2b;
       color: #fff;
     }
+	    .marquee-wrapper {
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: #fff;
+      padding: 12px 0;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
   </style>
 
   <script>
@@ -707,11 +716,11 @@ contactForm.addEventListener("submit", function(event) {
     contactForm.reset();                     /* خالی کردن فیلدها */
     contactForm.style.opacity = "1";         /* بازگرداندن فرم به حالت عادی */
     contactForm.style.pointerEvents = "auto";
-  }, 5500); // زمان به میلی‌ثانیه (۲.۵ ثانیه)
-});
-->
-  <div class="marquee-wrapper" id="marqueeBanner">
-    <div class="marquee-inner">
+  }
+	    
+	  <div class="marquee-wrapper" id="marqueeBanner">
+    <div class="marquee-inner">}
+	  
       <div class="marquee-content">
         <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
         <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
@@ -724,6 +733,7 @@ contactForm.addEventListener("submit", function(event) {
     </div>
     <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
   </div>
+
 
   <!-- بخش بنرهای تصویری تبلیغاتی -->
   <section class="banners-section">
