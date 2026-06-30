@@ -459,6 +459,60 @@
   <!-- محتوای فرضی صفحه -->
   <main class="main-content">
     <h2>فروشگاه همیشه در دسترس برش</h2>
+	    </header>
+
+  <!-- نوار روان حالا با فاصله ۵۰ پیکسلی زیر هدر نمایش داده می‌شود -->
+  <div class="marquee-wrapper" id="marqueeBanner">
+    <div class="marquee-inner">
+      <div class="marquee-content">
+        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
+        <span>⚡ محصولات جدید بخش پوشاک زمستانه شارژ شد! <a href="#">ورود به فروشگاه</a></span>
+        
+        <!-- تکرار برای چرخه بی‌وقفه -->
+        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
+      </div>
+    </div>
+    <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
+  </div>
+
+  <!-- بخش بنرهای تصویری تبلیغاتی -->
+  <section class="banners-section">
+    <div class="banners-grid">
+      
+      <!-- بنر اول -->
+      <div class="banner-card">
+        <div class="banner-bg" style="background-image: url('https://unsplash.com');"></div>
+        <div class="banner-overlay">
+          <h2>ساعت‌های هوشمند سری جدید</h2>
+          <p>امکانات بی‌نظیر، پایش سلامت و باتری قدرتمند با گارانتی معتبر</p>
+          <a href="#" class="banner-link-btn">خرید با تخفیف ویژه</a>
+        </div>
+      </div>
+
+      <!-- بنر دوم -->
+      <div class="banner-card">
+        <div class="banner-bg" style="background-image: url('https://unsplash.com');"></div>
+        <div class="banner-overlay">
+          <h2>کالکشن پوشاک بهاره</h2>
+          <p>جدیدترین استایل‌های سال را با بهترین کیفیت و قیمت مناسب تجربه کنید</p>
+          <a href="#" class="banner-link-btn">مشاهده گالری</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    function closeMarquee() {
+      document.getElementById('marqueeBanner').style.display = 'none';
+    }
+  
+
+
+
+
     <p></p>
   </main>
 <script>
