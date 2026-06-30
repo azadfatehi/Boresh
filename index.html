@@ -488,14 +488,20 @@
     }
 
     /* ۳. استایل نوار روان با فاصله ۵ سانتی‌متری (حدود ۱۹۰ پیکسل) از بالا */
-    .marquee-wrapper {
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      color: #fff;
-      padding: 12px 0;
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  <div class="marquee-wrapper" id="marqueeBanner">
+    <div class="marquee-inner">
+      <div class="marquee-content">
+        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
+        <span>⚡ محصولات جدید بخش پوشاک زمستانه شارژ شد! <a href="#">ورود به فروشگاه</a></span>
+        
+        <!-- تکرار برای چرخه بی‌وقفه -->
+        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
+      </div>
+    </div>
+    <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
+  </div>
       
       /* ایجاد فاصله دقیق از بالای صفحه */
       margin-top: 50px; /* این مقدار فاصله ۵ سانتی‌متری فرضی را ایجاد می‌کند */
