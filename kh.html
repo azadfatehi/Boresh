@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه برش</title>
+    <!-- اتصال به کتابخانه فونت‌آوسام نسخه ۶ برای آیکون‌ها -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+
+  body{background-color:#568296;}
+    
+ .logo img {
+    width: 10%;         /* عرض عکس را هم‌اندازه با لوگو می‌کند */
+    height: 10%;        /* ارتفاع عکس را هم‌اندازه با لوگو می‌کند */display: flex;
+}
+
+  
+ 
+
+   
+
+        
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff; /* پس‌زمینه سفید دیجی‌کالایی */
+            color: #3f4044;
+            padding-bottom: 60px;
+        }
+
+        /* هدر دیجی‌کالا */
+        .digi-header {
+            background-color: #568296;
+            border-bottom: 1px solid #e0e0e2;
+            position: sticky;
+            top: 0;
+            z-index: 99999;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-grow: 1;
+            max-width: 900px;
+        }
+
+        
+            
+            
+            
+           
+            
+        
+
+        
+
+.cart-btn {
+    margin-right: auto;
+}
+}        .cart-btn { color: #404145; font-size: 24px; text-decoration: none; position: relative; }
+        .cart-badge { position: absolute; top: -5px; left: -8px; background-color: #ef4056; color: #ffffff; font-size: 11px; font-weight: bold; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; }
+
+        /* بخش‌های مختلف صفحات (کامپوننت‌های روتینگ) */
+        .page-section {
+            max-width: 1600px;
+            margin: 50px auto;
+            padding: 0 40px;
+            display: none; /* پیش‌فرض پنهان */
+        }
+
+        /* استایل صفحه اصلی خانه */
+        #home-page {
+            display: block; /* صفحه اصلی پیش‌فرض باز است */
+        }
+
+        .home-title {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #2e3032;
+        }
+
+        /* کانتینر ۴ کارت رشته اصلی به سبک دیجی‌کالا */
+        .main-categories-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px; /* افزایش فاصله برای کارت‌های فوق بزرگ */
+            flex-wrap: wrap;
+        }
+
+        /* استایل کارت‌های دایره‌ای دسته‌بندی اصلی غول‌پیکر دیجی‌کالا */
+        .category-main-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            text-decoration: none;
+            width: 200px; /* عریض شدن کادر کلی کارت */
+        }
+
+        .category-circle-img {
+            width: 200px; /* افزایش فوق‌العاده ابعاد دایره به ۲۲۰ پیکسل */
+            height: 200px; /* افزایش فوق‌العاده ابعاد دایره به ۲۲۰ پیکسل */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .category-circle-img i {
+            font-size: 72px; /* فوق درشت شدن آیکون داخل دایره */
+            color: #ffffff;
+        }
+
+        .category-main-card span {
+            font-size: 18px; /* درشت‌تر شدن فونت عنوان دسته‌بندی اصلی */
+            font-weight: bold;
+            color: #3f4044;
+            text-align: center;
+        }
+
+        .category-main-card:hover .category-circle-img {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.16);
+        }
+
+        /* تصویر بزرگ بنر بالای صفحه جدید دسته‌بندی */
+        .category-hero-banner {
+            width: 100%;
+            height: 380px; /* افزایش ارتفاع بنر به سایز سینمایی و عریض */
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 34px; /* درشت‌ترین حالت متن بنر */
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            margin-bottom: 50px;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
+
+        /* شبکه کارت‌های محصول در صفحه جدید دسته‌بندی */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* کارت‌های کالا بسیار عریض‌تر شدند */
+            gap: 30px;
+        }
+
+        /* کارت‌های کالا با ابعاد بزرگتر زیر بنر صنف */
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 25px; /* افزایش چشمگیر فضای داخلی کارت کالا */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border: 1px solid #e0e0e2;
+            transition: box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .img-small-box {
+            width: 100%;
+            height: 200px; /* بزرگ شدن کادر تصویر اختصاصی محصول */
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .product-card h3 {
+            font-size: 16px; /* بزرگ و خوانا شدن نام کالا */
+            color: #3f4044;
+            line-height: 1.6;
+            min-height: 52px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .price-text {
+            font-size: 19px; /* درشت شدن بخش قیمت کالا */
+            font-weight: bold;
+            color: #ef4056;
+            text-align: left;
+            margin-top: auto;
+        }
+
+        .buy-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ef4056;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px; /* درشت‌تر شدن دکمه نهایی خرید */
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+        .buy-btn:hover { background-color: #c93245; }
+}/* تنظیمات تصویر پس‌زمینه برای کلاس شما */
+.category-main-card {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* بقیه کدهای استایل خودتان مثل عرض و ارتفاع را اینجا نگه دارید */
+}
+
+/* اعمال تصاویر اختصاصی برای هر کارت */
+.card-1 {
+    background-image: url('school.jpg');
+}
+
+.card-2 {
+    background-image: url('ghanadi.jpg');
+}
+
+.card-3 {
+    background-image: url('khayat.jpg');
+}
+
+.card-4 {
+    background-image: url('axor.jpg');
+}
+
+.category-main-card {
+    width: 200px;         /* عرض کارت - مقدار را به دلخواه تغییر دهید */
+    height: 200px;        /* ارتفاع کارت - باید دقیقاً برابر با عرض باشد */
+    border-radius: 50%;   /* این خط کارت را تبدیل به دایره کامل می‌کند */
+    
+    background-size: cover;     /* تصویر را کامل و بدون تغییر تناسب جا می‌دهد */
+    background-position: center;/* مرکز تصویر را نشان می‌دهد */
+    background-repeat: no-repeat;
+    
+    overflow: hidden;     /* جلوگیری از بیرون زدن محتوای داخل کارت از دایره */
+}
+/* تنظیمات پنجره پس‌زمینه پاپ‌آپ */
+.custom-modal {
+    display: none; /* در حالت عادی مخفی است */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+}
+
+/* باکس اصلی لیست عمودی */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 300px;
+    border-radius: 10px;
+    position: relative;
+    text-align: right; /* راست‌چین برای زبان فارسی */
+}
+
+/* دکمه بستن پنجره */
+.close-btn {
+    position: absolute;
+    top: 10px; left: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* استایل لیست عمودی */
+.vertical-menu {
+    list-style: none;
+    padding: 0; margin: 20px 0 0 0;
+}
+
+.vertical-menu li {
+    border-bottom: 1px solid #eee;
+}
+
+.vertical-menu li a {
+    display: block;
+    padding: 12px;
+    color: #333;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.vertical-menu li a:hover {
+    background-color: #f5f5f5;
+    color: #ff5722;
+}
+
+        .floating-back-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+            text-decoration: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+    <div class="logo-container"><br>
+        <!-- بخش لوگو (می‌توانید به جای متن، تگ img بگذارید) -->
+        <div class="logo"><br>
+		
+            <img src="لوگو.png" alt="تلفن تماس09137892830" onerror="this.style.display='none';">
+            
+        </div>
+</header>
+  <nav class="navbar">
+    <!-- بخش لوگو -->
+    <div class="logo">
+	
+      <a href=<img src="لوگو.png" alt="تلفن تماس09137892830" onerror="this.style.display='none';">
+</a>
+    </div>
+
+    <!-- هدر دیجی‌کالا -->
+	    <header class="main-header">
+    <div class="logo-container">
+        <!-- بخش لوگو (می‌توانید به جای متن، تگ img بگذارید) -->
+		
+            
+</header>
+
+    <header class="digi-header">
+
+
+        <div class="header-top">
+            <div class="header-right">
+                <!-- کلیک روی لوگو کاربر را به صفحه اصلی برمی‌گرداند -->
+                <span class="logo" onclick="navigateToPage('home-page')"></span>
+        </div>
+
+                </div>
+        </div>
+    </header>
+
+    <a href="index.html" class="floating-back-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 19 12 12 5"></polyline></svg>
+    </a>
+
+    <!-- ================= صفحه اصلی: ۴ کارت غول‌پیکر رشته اصلی دیجی‌کالا ================= -->
+    <main class="page-section" id="home-page">
+        <h2 class="home-title">شروع یک روز عالی با یک خرید دلچسب</h2>
+        
+        <div class="main-categories-container">
+		<!-- کارت اول -->
+<a href="submenu.html?category=1" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-1">
+        <span class="card-title"></span>
+    </div>
+</a>
+
+<!-- کارت دوم -->
+<a href="submenu.html?category=2" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-2">
+        <span class="card-title"></span>
+    </div>
+</a>
+
+<!-- کارت سوم -->
+<a href="submenu.html?category=3" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-3">
+        <span class="card-title"></span>
+    </div>
+</a>
+
+<!-- کارت چهارم -->
+<a href="submenu.html?category=4" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-4">
+        <span class="card-title"></span>
+    </div>
+</a>
+
+            <!-- کارت ۱. لوازم التحریر -->
+
+
+            
+
+<!-- پنجره لیست عمودی که در حالت عادی مخفی است -->
+<div id="menu1" class="custom-modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeMenu('menu1')">&times;</span>
+        
+</div>
+<!-- کارت اول -->
+<a href="submenu.html?category=1" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-1">
+        <span class="card-title">منو اول</span>
+    </div>
+</a>
+
+<!-- کارت دوم -->
+<a href="submenu.html?category=2" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-2">
+        <span class="card-title">منو دوم</span>
+    </div>
+</a>
+
+<!-- کارت سوم -->
+<a href="submenu.html?category=3" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-3">
+        <span class="card-title">منو سوم</span>
+    </div>
+</a>
+
+<!-- کارت چهارم -->
+<a href="submenu.html?category=4" target="_blank" style="text-decoration: none;">
+    <div class="category-main-card card-4">
+        <span class="card-title">منو چهارم</span>
+    </div>
+</a>

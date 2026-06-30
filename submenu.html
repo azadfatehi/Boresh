@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست محصولات و خدمات</title>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: #568296;
+            display: flex;
+            justify-content: center;
+            padding: 30px 15px;
+            margin: 0;
+        }
+
+        .menu-container {
+            background: #568296;
+            width: 100%;
+            max-width: 550px;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        #menu-title {
+            color: #222;
+            border-bottom: 3px solid #ff5722;
+            padding-bottom: 12px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            font-family: Tahoma, sans-serif;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .search-box input:focus {
+            border-color: #ff5722;
+        }
+
+        .vertical-list {
+            width: 100%;
+            display: block; 
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-left: 15px;
+            background-color: #eee; 
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin: 0 0 5px 0;
+        }
+
+        .item-desc {
+            font-size: 13px;
+            color: #777;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .item-action-area {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            margin-right: 15px;
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff5722;
+            white-space: nowrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn-direct { background-color: #2ecc71; color: white; }
+        .btn-cart { background-color: #f5f5f5; color: #555; border: 1px solid #ccc; }
+
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #ff5722;
+            color: white;
+            font-family: Tahoma, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .floating-back-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+            text-decoration: none;
+            z-index: 1000;
+        }
+
+        @media (max-width: 480px) {
+            .menu-item { flex-direction: column; align-items: flex-start; }
+            .item-img { width: 100%; height: 150px; margin-left: 0; margin-bottom: 12px; }
+            .item-action-area { width: 100%; flex-direction: row-reverse; justify-content: space-between; margin-right: 0; margin-top: 15px; border-top: 1px dashed #eee; padding-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <h2 id="menu-title">لیست محصولات</h2>
+        
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="جستجوی نام محصول..." onkeyup="filterProducts()">
+        </div>
+
+        <div id="menu-list" class="vertical-list">
+            <!-- کارت‌ها مستقیماً با جاوااسکریپت اینجا ساخته می‌شوند -->
+        </div>
+
+        <button id="load-more-btn" class="load-more-btn" onclick="loadMoreProducts()">مشاهده محصولات بیشتر</button>
+    </div>
+
+    <a href="kh.html" class="floating-back-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 19 12 12 5"></polyline></svg>
+    </a>
+
+    <script>
+        const menuData = {
+            "1": [
+                { name: "دفتر 60 برگ", desc: "مارک ... جلد سخت", price: "۹۵,۰۰۰ تومان", img: "images/potato.jpg" },
+                { name: "سالاد سزار", desc: "کاهو رسمی، فیله مرغ گریپ شده و سس سزار", price: "۱۸۰,۰۰۰ تومان", img: "images/caesar.jpg" },
+                { name: "سوپ جو", desc: "سوپ خامه ای قارچ و جو به همراه مرغ", price: "۶۵,۰۰۰ تومان", img: "images/soup.jpg" },
+                { name: "نان سیر", desc: "نان باگت تست شده با کره و سیر تازه", price: "۸۰,۰۰۰ تومان", img: "images/garlic-bread.jpg" }
+            ],
+            "2": [
+                { name: "پیتزا مخلوط", desc: "ژامبون، قارچ، فلفل دلمه‌ای، پنیر موزارلا", price: "۲۶۰,۰۰۰ تومان", img: "images/pizza.jpg" }
+            ],
+            "3": [],
+            "4": []
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let categoryId = urlParams.get('category');
+        
+        if (!categoryId) {
+            categoryId = "1";
+        }
+
+        const listElement = document.getElementById('menu-list');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const titleElement = document.getElementById('menu-title');
+
+        let currentIndex = 0;
+        const itemsPerPage = 2; 
+        let filteredItems = [];
+
+        if (menuData[categoryId]) {
+            filteredItems = menuData[categoryId];
+            
+            if(categoryId === "1") titleElement.innerText = "لوازم التحریر";
+            if(categoryId === "2") titleElement.innerText = "لوازم قنادی";
+            if(categoryId === "3") titleElement.innerText = "خیاطی و خرازی";
+            if(categoryId === "4") titleElement.innerText = "اکسسوری";
+            
+            renderNextBatch();
+        }
+
+        function renderNextBatch() {
+            const nextLimit = currentIndex + itemsPerPage;
+            const batch = filteredItems.slice(currentIndex, nextLimit);
+            
+            if (batch.length === 0 && currentIndex === 0) {
+                listElement.innerHTML = "<p style='text-align:center; color:#999;'>هیچ محصولی در این دسته موجود نیست.</p>";
+                loadMoreBtn.style.display = "none";
+                return;
+            }
+
+            batch.forEach(item => {
+                const itemCard = document.createElement('div');
+                itemCard.className = "menu-item";
+                
+                itemCard.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}" class="item-img">
+                    <div class="item-details">
+                        <h4 class="item-name">${item.name}</h4>
+                        <p class="item-desc">${item.desc}</p>
+                    </div>
+                    <div class="item-action-area">
+                        <span class="item-price">${item.price}</span>
+                        <div class="btn-group">
+                            <button class="btn btn-cart" onclick="addToCart('${item.name}')">➕ سبد خرید</button>
+                            <button class="btn btn-direct" onclick="directOrder('${item.name}')">سفارش مستقیم</button>
+                        </div>
+                    </div>
+                `;
+                listElement.appendChild(itemCard);
+            });
+            
+            currentIndex = nextLimit;
+            
+            if (currentIndex >= filteredItems.length) {
+                loadMoreBtn.style.display = "none";
+            } else {
+                loadMoreBtn.style.display = "block";
+            }
+        }
+
+        function loadMoreProducts() {
+            renderNextBatch();
+        }
+
+        function filterProducts() {
+            const searchValue = document.getElementById('search-input').value.toLowerCase();
+            const originalItems = menuData[categoryId] || [];
+
+            listElement.innerHTML = "";
+            currentIndex = 0;
+
+            if (searchValue === "") {
+                filteredItems = originalItems;
+            } else {
+                filteredItems = originalItems.filter(item => 
+                    item.name.toLowerCase().includes(searchValue) || 
+                    item.desc.toLowerCase().includes(searchValue)
+                );
+            }
+            renderNextBatch();
+        }
+
+        function addToCart(itemName) { alert(itemName + " به سبد خرید اضافه شد🛒"); }
+        function directOrder(itemName) { alert("سفارش شما ثبت گردید:" + itemName); }
+    </script>
+</body>
+</html>
