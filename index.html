@@ -2,6 +2,721 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فروشگاه برش</title>
+  <style>
+  body{background-color:#568296;}
+    /* ۱. ریست استایل‌های پایه */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Tahoma, Arial, sans-serif;
+      background-color: #568296;
+      color: #333;
+    }
+
+    /* ۲. استایل هدر سایت (بالاترین بخش صفحه) */
+    .site-header {
+      text-align: center;
+      padding: 20px 0;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      height: 120px; /* تنظیم ارتفاع مشخص برای هدر */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .site-header h1 {
+      font-size: 26px;
+      color: #222;
+    }
+
+    /* ۳. استایل نوار روان با فاصله ۵ سانتی‌متری (حدود ۱۹۰ پیکسل) از بالا */
+    .marquee-wrapper {
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: #fff;
+      padding: 12px 0;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      
+      /* ایجاد فاصله دقیق از بالای صفحه */
+      margin-top: 50px; /* این مقدار فاصله ۵ سانتی‌متری فرضی را ایجاد می‌کند */
+    }
+
+    .marquee-inner {
+      display: flex;
+      width: max-content;
+    }
+
+    .marquee-content {
+      display: flex;
+      gap: 60px;
+      padding-left: 60px;
+      white-space: nowrap;
+      animation: marqueeLinear 30s linear infinite; 
+    }
+
+    .marquee-wrapper:hover .marquee-content {
+      animation-play-state: paused;
+    }
+
+    .marquee-content span {
+      font-size: 14px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    .marquee-content a {
+      color: #ff4b2b;
+      background: #fff;
+      padding: 3px 12px;
+      border-radius: 20px;
+      text-decoration: none;
+      margin-right: 10px;
+      font-size: 12px;
+    }
+
+    .marquee-close-btn {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    @keyframes marqueeLinear {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(50%); }
+    }
+
+    /* ۴. بخش بنرهای تصویری تبلیغاتی */
+    .banners-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .banners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+    }
+
+    .banner-card {
+      position: relative;
+      height: 250px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+    }
+
+    .banner-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s ease;
+    }
+
+    .banner-card:hover .banner-bg {
+      transform: scale(1.08);
+    }
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to left, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px;
+      color: #568296;
+    }
+
+    .banner-overlay h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .banner-overlay p {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #e0e0e0;
+      max-width: 80%;
+      line-height: 1.6;
+    }
+
+    .banner-link-btn {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #333;
+      padding: 10px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .banner-card:hover .banner-link-btn {
+      background-color: #ff4b2b;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+
+    <div class="nav-container">
+      
+      <!-- بخش لوگو همراه با تصویر -->
+      <div class="logo">
+        <a href="#">
+          <!-- به جای آدرس زیر، می‌توانید مسیر عکس خودتان را بگذارید -->
+          <img src="لوگو.png">
+        </a>
+      </div>
+
+      <!-- بخش منوی اصلی -->
+	  <!-- منوی اصلی شما -->
+<ul class="menu-list">
+  <li><a href="#">خانه</a></li>
+  <li><a href="https://azadfatehi.github.io/Boresh/new.html">درباره ما</a></li>
+
+		  <li><a href="https://azadfatehi.github.io/Boresh/kh.html">فروشگاه</a></li>
+
+  <!-- دکمه تماس با ما -->
+  <li><a href="#" id="contactBtn">تماس با ما</a></li>
+</ul>
+
+<!-- ساختار پنجره پاپ‌آپ (Modal) -->
+<!-- ساختار پنجره پاپ‌آپ (Modal) همراه با اطلاعات تماس و فرم پیام -->
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <!-- دکمه ضربدر برای بستن -->
+    <span class="close-btn">&times;</span>
+    
+    <h3>تماس با ما</h3>
+    
+    <!-- بخش اول: اطلاعات تماس سریع -->
+    <ul class="modal-contact-list">
+      <li>☎️ <strong>تلفن:</strong> <a href="tel:02112345678">۰9137892830</a></li>
+      <li>📧 <strong>ایمیل:</strong> <a href="mailto:info@site.com">yas17010812@gmail.com</a></li>
+    </ul>
+
+    <!-- بخش دوم: فرم ارسال پیام مستقیم -->
+    <div class="contact-form-container">
+      <h4>"ارسال نظر، انتقاد و پيشنهاد"</h4><br>
+	 <div class="contact-form-container">
+  <!-- باکس پیغام موفقیت آمیز (در حالت عادی پنهان است) -->
+  <div id="successMsg" class="success-message">
+    <span>✅</span> پیام شما دریافت شد با تشکر از حسن توجه شما مطمئن باشید بررسی و اقدام می گردد </div>
+
+  <form id="directContactForm" action="#" method="POST">
+    
+    <div class="form-group">
+      <label for="userName">نام و نام خانوادگی:</label>
+      <input type="text" id="userName" name="name" required placeholder="نام خود را وارد کنید...">
+    </div>
+
+    <div class="form-group">
+      <label for="userEmail">آدرس ایمیل:</label>
+      <input type="email" id="userEmail" name="email" required placeholder="name@example.com">
+    </div>
+
+    <div class="form-group">
+      <label for="userMessage">متن پیام:</label>
+      <textarea id="userMessage" name="message" rows="4" required placeholder="پیام خود را اینجا بنویسید..."></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">ارسال پیام</button>
+  </form>
+</div>
+
+
+  </header>
+<style>
+
+  <!-- هدر اصلی سایت در بالاترین نقطه قرار گرفت -->
+  <header class="site-header">
+    <h1>لوگو و منوی اصلی وب‌سایت شما (هدر)</h1>
+  </header>
+
+  <!-- نوار روان حالا با فاصله ۵۰ پیکسلی زیر هدر نمایش داده می‌شود -->
+  <div class="marquee-wrapper" id="marqueeBanner">
+    <div class="marquee-inner">
+      <div class="marquee-content">
+        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
+        <span>⚡ محصولات جدید بخش پوشاک زمستانه شارژ شد! <a href="#">ورود به فروشگاه</a></span>
+        
+        <!-- تکرار برای چرخه بی‌وقفه -->
+        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
+      </div>
+    </div>
+    <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
+  </div>
+
+  <!-- بخش بنرهای تصویری تبلیغاتی -->
+  <section class="banners-section">
+    <div class="banners-grid">
+      <!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنرهای متحرک و کوچک</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #568296;
+            padding: 50px 0;
+            overflow-x: hidden; /* جلوگیری از اسکرول خوردن کل صفحه */
+        }
+
+        /* کانتینر اصلی ریل حرکتی */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            background: #568296;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+        }
+
+        /* ریلی که کارت‌ها درون آن حرکت می‌کنند */
+        .marquee-track {
+            display: flex;
+            gap: 20px;
+            /* اجرای انیمیشن حرکت مداوم */
+            animation: scroll-left 25s linear infinite;
+            width: max-content;
+        }
+
+        /* متوقف شدن حرکت هنگام نگه داشتن موس */
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* استایل بنرهای کوچک شده */
+        .banner-card {
+            position: relative;
+            width: 280px; /* اندازه کوچک و ثابت برای کنار هم قرار گرفتن */
+            height: 160px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0; /* جلوگیری از فشرده شدن کارت‌ها */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.4s ease;
+        }
+
+        .banner-card:hover .banner-bg {
+            transform: scale(1.08);
+        }
+
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.3));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+            color: #568296;
+        }
+
+        .banner-overlay h2 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .banner-overlay p {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            color: #d1d1d6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* سه نقطه در صورت طولانی بودن متن */
+        }
+
+        .banner-link-btn {
+            align-self: flex-start;
+            padding: 5px 12px;
+            background-color: #ff4757;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.7rem;
+            transition: background 0.2s;
+        }
+
+        .banner-link-btn:hover {
+            background-color: #ff6b81;
+        }
+
+        /* تعریف انیمیشن حرکت از راست به چپ (برای حالت RTL) */
+        @keyframes scroll-left {
+            100% {
+                transform: translateX(0);
+            }
+            0% {
+                /* حرکت به اندازه نصف طول کل ریل (چون آیتم‌ها تکرار شده‌اند) */
+                transform: translateX(50%);
+            }
+        }
+		@keyframes scroll-RTL{
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+    </style>
+
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنرهای متحرک با عکس درون کادر</title>
+    <style>
+  body{background-color:#568296;}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #568296;
+            padding: 50px 0;
+            overflow-x: hidden;
+        }
+
+        /* کانتینر ریل حرکتی */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            background: #568296;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+        }
+
+        /* ریل حرکت کارت‌ها */
+        .marquee-track {
+            display: flex;
+            gap: 20px;
+            animation: scroll-left 25s linear infinite;
+            width: max-content;
+        }
+
+        /* توقف حرکت با هوور موس */
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* تگ لینک که کل کارت را در بر می‌گیرد */
+        .banner-card-link {
+            text-decoration: none;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* استایل جدید کارت: چیدمان کنار هم عکس و متن */
+        .banner-card {
+            display: flex;
+            width: 340px; /* کمی عرض را بیشتر کردیم تا عکس و متن جا شوند */
+            height: 140px;
+            background-color: #ffffff;
+            border: 1px solid #565296;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* افکت بالا آمدن کارت هنگام هوور */
+        .banner-card-link:hover .banner-card {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* بخش تصویر درون کادر */
+        .banner-img-box {
+            width: 40%; /* ۴۰ درصد از فضای کارت به عکس اختصاص دارد */
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .banner-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* حفظ تناسبات تصویر و پر کردن کادر */
+            transition: transform 0.4s ease;
+        }
+
+        .banner-card-link:hover .banner-img-box img {
+            transform: scale(1.08); /* زوم ملایم عکس با هوور */
+        }
+
+        /* بخش محتوای متنی و دکمه */
+        .banner-content {
+            width: 60%; /* ۶۰ درصد فضا برای متن و دکمه */
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* پخش کردن متوازن محتوا از بالا تا پایین */
+            background-color: #565296;
+        }
+
+        .banner-content h2 {
+            font-size: 0.95rem;
+            color: #ffffff;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .banner-content p {
+            font-size: 0.75rem;
+            color: #ffffff;
+            margin-top: 4px;
+            /* خلاصه‌سازی متن‌های طولانی به دو خط */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+
+        /* دکمه خرید */
+        .banner-link-btn {
+            align-self: flex-start;
+            padding: 6px 14px;
+            background-color: #0071e3; /* رنگ آبی مدرن اپل */
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        /* انیمیشن حرکت (راست به چپ) */
+        @keyframes scroll-left {
+            100% { transform: translateX(0); }
+            0% { transform: translateX(50%); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee-track">
+            
+            <!-- کارت شماره ۱ (لینک مقصد را در href قرار دهید) -->
+            <a href="https://web.eitaa.com/#@axs_peykaniha" class="banner-card-link">
+                <div class="banner-card"> 
+                    <div class="banner-img-box">
+                        <!-- عکس واقعی محصول درون تگ img -->
+                        <img src="pyk.png" alt="ساعت هوشمند">
+                    </div>
+                    <div class="banner-content"> 
+                        <div>
+                            <h2>کانال عکس پیکانیها</h2> <br>
+							
+                            <p>یادآور گذشته های تلخ و شیرین و اطلاع از رویدادهای پیکان </p> 
+                        </div>
+                        <span class="banner-link-btn">جهت ورود کلیک کنید  </span> 
+                    </div> 
+                </div>
+            </a>
+
+            <!-- کارت شماره ۲ -->
+
+<a href="https://www.msn.com/en-us/sports/soccer/fifa_world_cup" target="_blank" class="banner-card-link" style="text-decoration: none; display: block;">
+    <div class="banner-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fff;"> 
+        <div class="banner-img-box">
+            <img src="jam.png" alt="جام جهانی">
+        </div>
+        <div class="banner-content"> 
+            <div>
+                <h2>آخرین اخبار ورزشی </h2> 
+                <p>اطلاع از آخرین اخبار و رویدادهای جام جهانی</p> 
+            </div>
+            
+            <!-- بخش راهنمای کامل، برجسته و کاملاً قابل مشاهده -->
+            <div class="translation-guide" style="background-color: #fff9e6; border-right: 4px solid #ffcc00; padding: 8px 12px; margin: 10px 0; border-radius: 4px; text-align: right;">
+                <span style="font-size: 13px; color: #b78103; font-weight: bold; display: block; line-height: 1.6;">
+                    💡 ترجمه به فارسی:
+                </span>
+                <span style="font-size: 12px; color: #555; display: block; margin-top: 4px; line-height: 1.6;">
+                     پس از ورود راست کلیک کرده گزینه <strong>Translate to Persian</strong>  را درکامپیوتر انتخاب کنید <strong>درموبایل با سه خطی بالا این کار انجام شود</strong>                </span>
+            </div>
+
+            <span class="banner-link-btn" style="display: inline-block; margin-top: 10px;">ورود به دنیای ورزش</span> 
+        </div> 
+    </div>
+</a>
+
+<!-- این اسکریپت با ارسال اطلاعات زبان مقصد، مترجم مرورگر را بیدار می‌کند -->
+<script>
+function triggerBrowserTranslate(event, url) {
+    event.preventDefault(); // جلوگیری از رفتار عادی لینک
+    
+    // باز کردن سایت MSN در یک پنجره جدید
+    var newTab = window.open(url, '_blank');
+    
+    if (newTab) {
+        // به محض شروع لود سایت، به مرورگر می‌گوییم که این صفحه باید به زبان فارسی نمایش داده شود
+        newTab.blur();
+        window.focus();
+        setTimeout(function() {
+            newTab.focus();
+        }, 500);
+    }
+}
+</script>
+
+            <!-- کارت شماره ۳ -->
+            <a href="https://example.com" class="banner-card-link">
+                <div class="banner-card"> 
+                    <div class="banner-img-box">
+                        <img src="https://unsplash.com" alt="مچ بند ورزشی">
+                    </div>
+                    <div class="banner-content"> 
+                        <div>
+                            <h2>مچ‌بندهای ورزشی</h2> 
+                            <p>بهترین همراه هوشمند برای تناسب اندام روزانه شما</p> 
+                        </div>
+                        <span class="banner-link-btn">تخفیف ویژه</span> 
+                    </div> 
+                </div>
+            </a>
+
+            <!-- تکرار کارت‌ها برای ایجاد افکت حرکت بی‌پایان -->
+            <a href="https://example.com" class="banner-card-link">
+                <div class="banner-card"> 
+                    <div class="banner-img-box">
+                        <img src="https://unsplash.com" alt="ساعت هوشمند">
+                    </div>
+                    <div class="banner-content"> 
+                        <div>
+                            <h2>ساعت هوشمند سری جدید</h2> 
+                            <p>امکانات بی‌نظیر، پایش سلامت و باتری قدرتمند</p> 
+                        </div>
+                        <span class="banner-link-btn">خرید کالا</span> 
+                    </div> 
+                </div>
+            </a>
+
+            <a href="https://example.com" class="banner-card-link">
+                <div class="banner-card"> 
+                    <div class="banner-img-box">
+                        <img src="https://unsplash.com" alt="ساعت کلاسیک">
+                    </div>
+                    <div class="banner-content"> 
+                        <div>
+                            <h2>ساعت کلاسیک دیجیتال</h2> 
+                            <p>طراحی شیک و بدنه ضد استیل با دوام بالا</p> 
+                        </div>
+                        <span class="banner-link-btn">مشاهده</span> 
+                    </div> 
+                </div>
+            </a>
+
+            <a href="https://example.com" class="banner-card-link">
+                <div class="banner-card"> 
+                    <div class="banner-img-box">
+                        <img src="https://unsplash.com" alt="مچ بند ورزشی">
+                    </div>
+                    <div class="banner-content"> 
+                        <div>
+                            <h2>مچ‌بندهای ورزشی</h2> 
+                            <p>بهترین همراه هوشمند برای تناسب اندام روزانه شما</p> 
+                        </div>
+                        <span class="banner-link-btn">تخفیف ویژه</span> 
+                    </div> 
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+</body>
+</html>
+
+  </section>
+
+  <script>
+    function closeMarquee() {
+      document.getElementById('marqueeBanner').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
   <title>فروشگاه برش</title>
   <style>
   h4{font-family:"B",titr;}
@@ -375,89 +1090,13 @@
 }
 /* کدهای جدید بنر روان و بنرهای تصویری */
   </style>
-</head>
-<body>
-<!-- بخش بنرهای تصویری -->
-
-  <!-- سربرگ سایت -->
-  <header>
-  
-  <form class="search-box" action="/search" method="GET">
-  <input type="text" class="search-input" name="q" placeholder="">
-  <button type="submit" class="search-button">جستجو</button>
-</form>
-
-    <div class="nav-container">
-      
-      <!-- بخش لوگو همراه با تصویر -->
-      <div class="logo">
-        <a href="#">
-          <!-- به جای آدرس زیر، می‌توانید مسیر عکس خودتان را بگذارید -->
-          <img src="لوگو.png">
-        </a>
-      </div>
-
-      <!-- بخش منوی اصلی -->
-	  <!-- منوی اصلی شما -->
-<ul class="menu-list">
-  <li><a href="#">خانه</a></li>
-  <li><a href="https://azadfatehi.github.io/Boresh/new.html">درباره ما</a></li>
-
-		  <li><a href="https://azadfatehi.github.io/Boresh/kh.html">فروشگاه</a></li>
-
-  <!-- دکمه تماس با ما -->
-  <li><a href="#" id="contactBtn">تماس با ما</a></li>
-</ul>
-
-<!-- ساختار پنجره پاپ‌آپ (Modal) -->
-<!-- ساختار پنجره پاپ‌آپ (Modal) همراه با اطلاعات تماس و فرم پیام -->
-<div id="contactModal" class="modal">
-  <div class="modal-content">
-    <!-- دکمه ضربدر برای بستن -->
-    <span class="close-btn">&times;</span>
-    
-    <h3>تماس با ما</h3>
-    
-    <!-- بخش اول: اطلاعات تماس سریع -->
-    <ul class="modal-contact-list">
-      <li>☎️ <strong>تلفن:</strong> <a href="tel:02112345678">۰9137892830</a></li>
-      <li>📧 <strong>ایمیل:</strong> <a href="mailto:info@site.com">yas17010812@gmail.com</a></li>
-    </ul>
-
-    <!-- بخش دوم: فرم ارسال پیام مستقیم -->
-    <div class="contact-form-container">
-      <h4>"ارسال نظر، انتقاد و پيشنهاد"</h4><br>
-	 <div class="contact-form-container">
-  <!-- باکس پیغام موفقیت آمیز (در حالت عادی پنهان است) -->
-  <div id="successMsg" class="success-message">
-    <span>✅</span> پیام شما دریافت شد با تشکر از حسن توجه شما مطمئن باشید بررسی و اقدام می گردد </div>
-
-  <form id="directContactForm" action="#" method="POST">
-    
-    <div class="form-group">
-      <label for="userName">نام و نام خانوادگی:</label>
-      <input type="text" id="userName" name="name" required placeholder="نام خود را وارد کنید...">
-    </div>
-
-    <div class="form-group">
-      <label for="userEmail">آدرس ایمیل:</label>
-      <input type="email" id="userEmail" name="email" required placeholder="name@example.com">
-    </div>
-
-    <div class="form-group">
-      <label for="userMessage">متن پیام:</label>
-      <textarea id="userMessage" name="message" rows="4" required placeholder="پیام خود را اینجا بنویسید..."></textarea>
-    </div>
-
-    <button type="submit" class="submit-btn">ارسال پیام</button>
-  </form>
-</div>
 
 
-  </header>
-<style>
-    /* ۱. ریست استایل‌های پایه */
-    * {
+
+ 
+   
+	<style>
+    {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -465,7 +1104,7 @@
 
     body {
       font-family: Tahoma, Arial, sans-serif;
-      background-color: #f7f9fc;
+      background-color: #568296;
       color: #333;
     }
 
@@ -486,23 +1125,32 @@
       font-size: 26px;
       color: #222;
     }
+</style>
 
-    /* ۳. استایل نوار روان با فاصله ۵ سانتی‌متری (حدود ۱۹۰ پیکسل) از بالا */
+
   <div class="marquee-wrapper" id="marqueeBanner">
     <div class="marquee-inner">
       <div class="marquee-content">
-        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
-        <span>⚡ محصولات جدید بخش پوشاک زمستانه شارژ شد! <a href="#">ورود به فروشگاه</a></span>
+        <span>🔥 خرید از برش با کمترین قیمت،بهترین کیفیت وتایید اصالت کالا! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 فروشگاه برش مطمئن و در دسترس </span>
+        <span>⚡ شارژ محصولات در اسرع وقت وبا سفارش مشتری! <a href="#">ورود به فروشگاه</a></span>
         
         <!-- تکرار برای چرخه بی‌وقفه -->
-        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
+        <span>🔥 خرید از برش با کمترین قیمت،بهترین کیفیت و تایید اصالت کالا! <a href="#">مشاهده محصولات</a></span>
+        <span>🚀 فروشگاه برش مطمئن و در دسترس </span>
+		        <span>⚡ شارژ محصولات در اسرع وقت وبا سفارش مشتری! <a href="#">ورود به فروشگاه</a></span>
+
       </div>
     </div>
     <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
   </div>
+  
+  <!-- بخش بنرهای تصویری تبلیغاتی -->
+  <section class="banners-section">
+    <div class="banners-grid">
       
+  </section>
+      <style>
       /* ایجاد فاصله دقیق از بالای صفحه */
       margin-top: 50px; /* این مقدار فاصله ۵ سانتی‌متری فرضی را ایجاد می‌کند */
     }
@@ -656,6 +1304,174 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
   </style>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمایش ۴ کارت در یک سطر</title>
+    <style>
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #568296;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+        /* گرید هوشمند برای چیدمان دقیق ۴ کارت در یک سطر */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* تقسیم دقیق به ۴ ستون مساوی */
+            gap: 20px; /* فاصله استاندارد بین کارت‌ها */
+            width: 100%;
+            max-width: 1200px; /* حداکثر عرض کل جعبه */
+            box-sizing: border-box;
+        }
+        .card {
+            background: #565296;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* چیدمان منظم دکمه‌ها در پایین کارت */
+            min-height: 200px; /* ارتفاع هماهنگ برای تمام کارت‌ها */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            color: #ffffff;
+            margin-top: 0;
+            font-size: 16px;
+        }
+        .card p {
+            color: #ffffff;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 10px 0 20px 0;
+        }
+        .card-btn {
+            display: white;
+            padding: 10px;
+            background-color: #0078d4;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .card-btn:hover {
+            background-color: #005a9e;
+        }
+
+        /* واکنش‌گرایی: تنظیم ظاهر در تبلت و موبایل */
+        @media (max-width: 992px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr); /* در تبلت تبدیل به ۲ ستون می‌شود */
+            }
+        }
+        @media (max-width: 576px) {
+            .cards-container {
+                grid-template-columns: 1fr; /* در موبایل تبدیل به ۱ ستون می‌شود */
+            }
+        }
+		.glass-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05); /* پس‌زمینه بسیار ملایم شیشه‌ای */
+  padding: 15px 25px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  margin-bottom: 25px;
+  backdrop-filter: blur(5px);
+}
+
+    </style>
+</head>
+<body>
+
+
+  
+<h2 class="glass-title">آموزشهای رایگان و کاربردی</h2><br><br>
+    
+    
+    
+    <!-- باکس اصلی که ۴ کارت امروز را در یک سطر نمایش می‌دهد -->
+    <div id="daily-cards-box" class="cards-container"></div>
+
+    <script>
+        // ۱. بانک اطلاعاتی سالانه (نمونه با ۴ کارت برای روزهای سال)
+        const yearlyCardsData = {
+            1: [
+                { title: "نکته اموزشی امروز", desc: "با آموزش های خیاطی ما همراه باشید ", link: "#" },
+                { title: "تحلیل فنی بازی‌ها ۲", desc: "بررسی تاکتیک تیم‌ها توسط کارشناسان ورزشی.", link: "#" },
+                { title: "ویدیو خلاصه بازی ۳", desc: "مشاهده گل‌ها و لحظات حساس بازی‌های دیشب.", link: "#" },
+                { title: "جدول امتیازات ۴", desc: "آخرین وضعیت و رده‌بندی تیم‌ها در جدول مسابقات.", link: "#" }
+            ]
+            // برای بقیه روزها (2 تا 365) نیز می‌توانید به همین ترتیب ۴ کارت تعریف کنید.
+        };
+
+        // ۲. محاسبه شماره روز سال (۱ تا ۳۶۵)
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        // ۳. قرار دادن کارت‌ها در صفحه
+        function displayYearlyCards() {
+            const container = document.getElementById('daily-cards-box');
+            const dayOfYear = getDayOfYear();
+            
+            let todaysCards = yearlyCardsData[dayOfYear];
+
+            // اگر دیتایی برای امروز نبود، ۴ کارت پیش‌فرض برای خالی نماندن سطر ساخته می‌شود
+            if (!todaysCards || todaysCards.length === 0) {
+                todaysCards = [
+                    { title: `نکته آموزشی امروز (خیاطی)`, desc: "با آموزشهای ما همراه شوید و هر روز بهتر شوید.", link: "#" },
+                    { title: `کارت دوم امروز (روز ${dayOfYear})`, desc: "توضیحات مربوط به بخش دوم اخبار روزانه.", link: "#" },
+                    { title: `کارت سوم امروز (روز ${dayOfYear})`, desc: "توضیحات مربوط به بخش سوم اخبار روزانه.", link: "#" },
+                    { title: `کارت چهارم امروز (روز ${dayOfYear})`, desc: "توضیحات مربوط به بخش چهارم اخبار روزانه.", link: "#" }
+                ];
+            }
+
+            // تولید کدهای HTML خروجی
+            let htmlContent = '';
+            todaysCards.forEach(card => {
+                htmlContent += `
+                    <div class="card">
+                        <div>
+                            <h3>${card.title}</h3>
+                            <p>${card.desc}</p>
+                        </div>
+                        <a href="${card.link}" class="card-btn">مشاهده جزئیات</a>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = htmlContent;
+        }
+
+        // اجرای سیستم با باز شدن صفحه
+        displayYearlyCards();
+    </script>
+
+</body>
+</html>
 
   <script>
     function closeMarquee() {
@@ -665,113 +1481,527 @@
 
   <!-- محتوای فرضی صفحه -->
   <main class="main-content">
-    <h2>فروشگاه همیشه در دسترس برش</h2>
-	
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمایش کادر گرد روزانه</title>
+    
+    <style>
+        /* استایل کادر گرد شناور */
+        .toast-round {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff5722; /* رنگ نارنجی جذاب */
+            color: #fff;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%; /* کاملاً دایره‌ای */
+            font-family: Tahoma, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            text-align: center;
+            direction: rtl;
+            transition: opacity 0.5s, transform 0.3s;
+            opacity: 1;
+        }
 
-  <!-- نوار روان حالا با فاصله ۵۰ پیکسلی زیر هدر نمایش داده می‌شود --
+        /* افکت بزرگ شدن هنگام رفتن موس روی دایره */
+        .toast-round:hover {
+            transform: scale(1.1);
+            background-color: #e64a19;
+        }
+    </style>
+</head>
+<body>
 
-    <p></p>
-  </main>
-<script>
-  // گرفتن عناصر از صفحه
-  const modal = document.getElementById("contactModal");
-  const btn = document.getElementById("contactBtn");
-  const closeSpan = document.querySelector(".close-btn");
+    <!-- کادر گرد (به صورت پیش‌فرض پنهان است تا جاوا اسکریپت دیتای امروز را تزریق کند) -->
+    <a href="#" id="daily-toast" class="toast-round" style="display: none;"></a>
 
-  // ۱. وقتی کاربر روی تماس با ما کلیک کرد، پاپ‌آب باز شود
-  btn.addEventListener("click", function(event) {
-    event.preventDefault(); // جلوگیری از ریلود یا پرش صفحه به خاطر تگ a
-    modal.style.display = "block";
-  });
+    <script>
+        // ۱. تابع محاسبه دقیق شماره روز جاری از سال (۱ تا ۳۶۶)
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
 
-  // ۲. وقتی کاربر روی ضربدر کلیک کرد، پاپ‌آپ بسته شود
-  closeSpan.addEventListener("click", function() {
-    modal.style.display = "none";
-  });
+        // ۲. لود کردن اطلاعات از فایل data.json و نمایش در کادر
+        window.addEventListener('DOMContentLoaded', () => {
+            const toastElement = document.getElementById('daily-toast');
+            const currentDay = getDayOfYear(); // دریافت شماره روز امسال
 
-  // ۳. وقتی کاربر روی فضای سیاه بیرون از کادر کلیک کرد، پاپ‌آپ بسته شود
-  window.addEventListener("click", function(event) {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  });
-const contactForm = document.getElementById("directContactForm");
-const successMsg = document.getElementById("successMsg");
-const modalContainer = document.getElementById("contactModal"); // مطمئن شوید آی‌دی مپ با والد اصلی پاپ‌آپ یکی باشد
+            // فراخوانی فایل دیتایی که در نت‌پد ساختید
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    // پیدا کردن اطلاعات متناسب با روز سال
+                    const todayContent = data[currentDay - 1];
 
-contactForm.addEventListener("submit", function(event) {
-  event.preventDefault(); // جلوگیری از ریلود صفحه
-  
-  // ۱. نشان دادن باکس موفقیت با اضافه کردن کلاس CSS
-  successMsg.classList.add("show");
-  
-  // ۲. غیرفعال کردن دکمه یا پنهان کردن فرم برای جلوگیری از ارسال مجدد
-  contactForm.style.opacity = "0.3";
-  contactForm.style.pointerEvents = "none"; 
-
-  // ۳. بستن خودکار پاپ‌آپ و ریست کردن فرم بعد از ۲ ثانیه
-  setTimeout(function() {
-    modalContainer.style.display = "none";    /* بستن پاپ‌آب */
-    successMsg.classList.remove("show");     /* پنهان کردن مجدد پیام برای دفعات بعد */
-    contactForm.reset();                     /* خالی کردن فیلدها */
-    contactForm.style.opacity = "1";         /* بازگرداندن فرم به حالت عادی */
-    contactForm.style.pointerEvents = "auto";
-  }
-	    
-	  <div class="marquee-wrapper" id="marqueeBanner">
-    <div class="marquee-inner">}
-	  
-      <div class="marquee-content">
-        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
-        <span>⚡ محصولات جدید بخش پوشاک زمستانه شارژ شد! <a href="#">ورود به فروشگاه</a></span>
-        
-        <!-- تکرار برای چرخه بی‌وقفه -->
-        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
-      </div>
-    </div>
-    <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
-  </div>
-
-
-  <!-- بخش بنرهای تصویری تبلیغاتی -->
-  <section class="banners-section">
-    <div class="banners-grid">
-      
-      <!-- بنر اول -->
-      <div class="banner-card">
-        <div class="banner-bg" style="background-image: url('https://unsplash.com');"></div>
-        <div class="banner-overlay">
-          <h2>ساعت‌های هوشمند سری جدید</h2>
-          <p>امکانات بی‌نظیر، پایش سلامت و باتری قدرتمند با گارانتی معتبر</p>
-          <a href="#" class="banner-link-btn">خرید با تخفیف ویژه</a>
-        </div>
-      </div>
-
-      <!-- بنر دوم -->
-      <div class="banner-card">
-        <div class="banner-bg" style="background-image: url('https://unsplash.com');"></div>
-        <div class="banner-overlay">
-          <h2>کالکشن پوشاک بهاره</h2>
-          <p>جدیدترین استایل‌های سال را با بهترین کیفیت و قیمت مناسب تجربه کنید</p>
-          <a href="#" class="banner-link-btn">مشاهده گالری</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <script>
-    function closeMarquee() {
-      document.getElementById('marqueeBanner').style.display = 'none';
-    }
-  </script>
-
-
-
-
-</script>
+                    if (toastElement && todayContent) {
+                        toastElement.href = todayContent.link; // قرار دادن لینک روز
+                        toastElement.innerText = todayContent.text; // قرار دادن متن روز
+                        toastElement.style.display = 'flex'; // نمایش کادر
+                        
+                        // ۳. محو شدن خودکار پس از ۱۰ ثانیه (اختیاری)
+                        setTimeout(() => {
+                            toastElement.style.opacity = '0';
+                            setTimeout(() => toastElement.remove(), 500);
+                        }, 10000);
+                    }
+                })
+                .catch(error => console.error('خطا در بارگذاری فایل دیتای روزانه:', error));
+        });
+    </script>
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تست کادر گرد روزانه</title>
+    
+    <style>
+        .toast-round {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff5722; 
+            color: #fff;
+            width: 95px;
+            height: 95px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%; 
+            font-family: Tahoma, sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 9999;
+            text-align: center;
+            direction: rtl;
+            transition: opacity 0.5s, transform 0.3s;
+            opacity: 1;
+        }
+        .toast-round:hover {
+            transform: scale(1.1);
+            background-color: #e64a19;
+        }
+    </style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تست کادر گرد با انیمیشن ورود</title>
+    
+    <style>
+        /* تعریف انیمیشن ورود (حرکت از پایین به بالا + زوم شدن) */
+        @keyframes popUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .toast-round {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff5722; 
+            color: #fff;
+            width: 95px;
+            height: 95px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%; 
+            font-family: Tahoma, sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 9999;
+            text-align: center;
+            direction: rtl;
+            
+            /* اجرای انیمیشن ورود به مدت 0.6 ثانیه */
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            
+            /* افکت برای زمان رفتن موس روی دایره */
+            transition: opacity 0.5s, transform 0.3s;
+        }
+
+        /* افکت بزرگ شدن هنگام رفتن موس روی دایره */
+        .toast-round:hover {
+            transform: scale(1.1) !important; /* کلمه important برای غلبه بر انیمیشن ورودی است */
+            background-color: #e64a19;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- کادر گرد روزانه -->
+    <a href="#" id="daily-toast" class="toast-round" style="display: none;"></a>
+
+    <script>
+        const dailyData = [
+            { "text": "تقویم تاریخ", "link": "https://site.com" },
+            { "text": "فایل روز ۲", "link": "https://site.com" },
+            { "text": "فایل روز ۳", "link": "https://site.com" },
+            { "text": "فایل روز ۴", "link": "https://site.com" }
+        ];
+
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const toastElement = document.getElementById('daily-toast');
+            const currentDay = getDayOfYear(); 
+
+            const index = (currentDay - 1) % dailyData.length;
+            const todayContent = dailyData[index];
+
+            if (toastElement && todayContent) {
+                toastElement.href = todayContent.link; 
+                toastElement.innerText = todayContent.text; 
+                toastElement.style.display = 'flex'; 
+                
+                // محو شدن خودکار پس از ۱۰ ثانیه
+                setTimeout(() => {
+                    toastElement.style.opacity = '0';
+                    setTimeout(() => toastElement.remove(), 500);
+                }, 10000);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شبکه مینیاتوری ۵ ستونه محصولات</title>
+  
+  <!-- فونت آیکون‌ها (FontAwesome) -->
+  <link rel="stylesheet" href="https://cloudflare.com">
+  
+  <style>
+    /* --------------------------------------------------
+       ۱. تنظیمات پایه و ریست قالب
+    -------------------------------------------------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background-color: #568296;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px 10px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px; 
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 16px;
+      color: #2d3436;
+      margin-bottom: 15px;
+      padding-right: 8px;
+      border-right: 3px solid #00b0ff;
+    }
+
+    /* --------------------------------------------------
+       ۲. استایل‌های شبکه ۵ ستونه فوق‌العاده کوچک
+    -------------------------------------------------- */
+    .mini-product-grid {
+      display: grid;
+      /* اجبار به داشتن ۵ ستون مساوی در دسکتاپ و تبلت‌های بزرگ */
+      grid-template-columns: repeat(5, 1fr); 
+      gap: 10px; /* فاصله بسیار کم برای جا شدن بهتر */
+    }
+
+    /* واکنش‌گرایی فقط برای موبایل و تبلت‌های کوچک */
+    @media (max-width: 768px) { .mini-product-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 480px) { .mini-product-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* استایل کارت‌های بسیار کوچک (Micro Cards) */
+    .product-card-mini {
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      border: 1px solid #eaeaea;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    
+    
+      
+    }
+
+    /* کاهش شدید ارتفاع تصویر محصول */
+    .product-image-wrapper {
+      position: relative;
+      width: 100%;
+      height: 110px; /* عکس‌ها بسیار ظریف و کوچک شدند */
+      background-color: #fcfcfc;
+      overflow: hidden;
+    }
+
+    .product-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* دکمه لایک میکرو */
+    .wishlist-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(255, 255, 255, 0.95);
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 11px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      z-index: 2;
+    }
+
+    .wishlist-btn.liked {
+      color: #ff4757;
+    }
+
+    /* بهینه‌سازی متن‌ها برای ابعاد کاملاً مینی */
+    .product-info {
+      padding: 8px; /* پدینگ فشرده */
+    }
+
+    .product-info h3 {
+      font-size: 12px; /* متن کاملاً ریز */
+      margin: 0 0 4px 0;
+      color: #ffffff;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; /* سه نقطه در صورت طولانی بودن عنوان */
+    }
+
+    .product-info p {
+      font-size: 10.5px;
+      color: #ffffff;
+      line-height: 1.4;
+      margin: 0 0 8px 0;
+      height: 30px; /* فقط ۲ خط متن کوتاه جای می‌گیرد */
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    /* فوتر کارت مینی */
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      height: 26px;
+      overflow: hidden;
+    }
+
+    .product-footer .price {
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 11.5px;
+      transition: transform 0.2s ease;
+    }
+
+    /* دکمه سبد خرید بسیار ظریف */
+    .add-to-cart-btn {
+      background: #38bdf8;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10.5px;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      transform: translateY(32px);
+      opacity: 0;
+      transition: all 0.25s ease;
+    }
+	.add-to-cart-btn {
+  background: #0066ff;
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  
+  /* تغییرات برای نمایش دائمی دکمه: */
+  position: relative; /* از حالت absolute به relative تغییر کرد */
+  transform: translateY(0) !important; /* لغو جابجایی به پایین */
+  opacity: 1 !important; /* نمایش دکمه با وضوح کامل */
+}
+
+/* ۱. اصلاح استایل بدنه اصلی کارت */
+.product-card-mini {
+  background-color: #565296 !important; /* واژه important! اجبار می‌کند که رنگ حتماً اعمال شود */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* ۲. اطمینان از اینکه بخش اطلاعات محصول هم شفاف است و رنگ کارت را نشان می‌دهد */
+.product-info {
+  padding: 8px;
+  background: transparent !important; /* شفاف کردن این بخش تا رنگ بک‌گراند اصلی کارت دیده شود */
+}
+
+    }
+
+    
+      
+    }
+	
+  </style>
+</head>
+<body>
+
+<div class="main-title-container">
+  <h2 class="mega-title">خرید ویژه و تخفیفی</h2>
+</div>
+
+    
+    <section class="mini-product-grid">
+      
+      <!-- ردیف ۱ (۵ کارت اول) -->
+<div class="product-card-mini">
+  <div class="product-image-wrapper">
+    <img src="pyk.png" alt="محصول">
+    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+  </div>
+  <div class="product-info">
+    <h3>ساعت هوشمند مینی</h3>
+    <p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p>
+    <div class="product-footer">
+      <span class="price">۱,۴۵۰,۰۰۰ ت</span>
+      
+      <!-- 🚀 اتصال هوشمند و مستقیم به روبیکا با متن آماده 🚀 -->
+<!-- این لینک مستقیماً برنامه روبیکای گوشی کاربر را باز می‌کند -->
+<a href="https://rubika.com/az17010812" class="add-to-cart-btn" target="_blank">
+  <i class="fas fa-shopping-basket"></i>
+  <span>خرید</span>
+</a>
+      
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+</div>
+      
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>هدفون بی‌سیم</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۲,۳۰۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>پاوربانک فست</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۸۹۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>اسپیکر ضدآب</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۱,۲۰۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>مچ‌بند سلامتی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۴۵۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+
+      <!-- ردیف ۲ -->
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>کابل شارژ کنفی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۹۵,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>هاب یو‌اس‌بی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۳۲۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>ماوس بی‌سیم</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۱۸۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>کیبورد مینی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۶۵۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos0" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>پد ماوس طبی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۷۵,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
+	  
+
+      <!-- نکته: کدهای ردیف ۳ و ۴ و ۵ را برای خلاصه شدن متن فاکتور گرفتم، شما می‌توانید همین بلوک‌ها را کپی کنید تا ۲۵ تا کامل شود -->
+
+<style>
+/* کانتینر اصلی تیتر برای وسط‌چین کردن کل مجموعه */
+.main-title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* تراز کردن آیتم‌ها در وسط */
+  text-align: center; /* وسط‌چین کردن متن‌ها */
+  margin-top: 50px; /* فاصله از کارت‌های بزرگ بالایی */
+  margin-bottom: 40px; /* فاصله از کارت‌های کوچک پایینی */
+  width: 100%;
+  direction: rtl;
+}
+
+/* تیتر بزرگ اصلی */
+.mega-title {
+  font-size: 25px; /* سایز بزرگ و چشم‌گیر */
+  font-weight: 600;
+  color: #ffffff; /* رنگ سفید هماهنگ با پس‌زمینه سایت شما */
+  position: relative;
+  display: inline-block;
+  padding-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+
+}
+
+</style>
