@@ -1,2000 +1,474 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>فروشگاه برش</title>
-  <style>
-  body{background-color:#568296;}
-    /* ۱. ریست استایل‌های پایه */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه برش</title>
+    <style>
+        .borosh-header-box * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
+        .borosh-header-box { background: #fff; direction: rtl; border-bottom: 2px solid #eee; padding: 10px; position: relative; }
+        .borosh-top { display: flex; align-items: center; justify-content: space-between; height: 50px; }
+        .borosh-logo img { max-height: 40px; width: auto; display: block; }
+        .borosh-left { display: flex; align-items: center; gap: 10px; }
+        
+        /* باکس جستجو */
+        .borosh-search { position: relative; }
+        .borosh-search input { width: 140px; height: 34px; border: 1px solid #ccc; border-radius: 20px; padding: 0 10px 0 25px; font-size: 13px; outline: none; }
+        
+        .borosh-ham-container { position: relative; display: inline-block; }
+        .borosh-btn { font-size: 28px; background: none; border: none; cursor: pointer; color: #333; padding: 0 5px; }
+        .borosh-ham-list { position: absolute; left: 0; top: 100%; background: #ffffff; min-width: 200px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); list-style: none; border-radius: 6px; display: none; z-index: 99999; border: 1px solid #ddd; }
+        .borosh-ham-list li a { display: block; padding: 12px 15px; color: #333; text-decoration: none; font-size: 14px; font-weight: bold; border-bottom: 1px solid #eee; }
+        .borosh-ham-list li a:hover { background: #f5f5f5; color: #007bff; }
+        .borosh-ham-container:hover .borosh-ham-list { display: block; }
 
-    body {
-      font-family: Tahoma, Arial, sans-serif;
-      background-color: #568296;
-      color: #333;
-    }
+        /* نوار دسته‌بندی‌ها */
+        .borosh-nav { display: flex; background: #fff; padding: 12px 5px; border-top: 1px solid #f0f0f0; gap: 20px; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .borosh-nav::-webkit-scrollbar { display: none; }
+        .borosh-item { flex-shrink: 0; list-style: none; }
+        .borosh-link { font-size: 13px; font-weight: bold; color: #555; padding: 5px 8px; display: block; cursor: pointer; user-select: none; text-decoration: none; }
+        .borosh-link:hover { color: #007bff; }
+        
+        .borosh-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99990; display: none; }
+        .borosh-overlay.show { display: block; }
 
-    /* ۲. استایل هدر سایت (بالاترین بخش صفحه) */
-    .site-header {
-      text-align: center;
-      padding: 20px 0;
-      background-color: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      height: 120px; /* تنظیم ارتفاع مشخص برای هدر */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .site-header h1 {
-      font-size: 26px;
-      color: #222;
-    }
+        /* پاپ‌آپ زیرمجموعه موبایل */
+        .borosh-bottom-sheet { position: fixed; bottom: -100%; left: 0; width: 100%; max-height: 80vh; background: #ffffff; border-radius: 20px 20px 0 0; box-shadow: 0 -5px 25px rgba(0,0,0,0.15); z-index: 99995; transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .borosh-bottom-sheet.open { bottom: 0; }
+        .borosh-sheet-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; }
+        .borosh-sheet-title { font-size: 15px; font-weight: bold; color: #333; }
+        .borosh-sheet-close { font-size: 20px; color: #999; cursor: pointer; padding: 5px; }
+        .borosh-sheet-content { list-style: none; overflow-y: auto; padding: 10px 0; }
+        .borosh-sheet-content li a { display: block; padding: 10px 20px; color: #444; text-decoration: none; font-size: 13px; }
+        .borosh-sheet-content li a:hover { color: #007bff; }
+        
+        /* کاتالوگ و گرید محصولات */
+        .borosh-catalog-container { max-width: 1200px; margin: 20px auto; padding: 0 15px; direction: rtl; }
+        .borosh-catalog-title { font-size: 18px; color: #333; margin-bottom: 20px; border-right: 4px solid #007bff; padding-right: 10px; }
+        
+        .borosh-filter-bar { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; }
+        .borosh-filter-bar::-webkit-scrollbar { display: none; }
+        .borosh-filter-btn { background: #ffffff; border: 1px solid #ddd; color: #555; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+        .borosh-filter-btn.active { background: #007bff; border-color: #007bff; color: #ffffff; }
 
-    /* ۳. استایل نوار روان با فاصله ۵ سانتی‌متری (حدود ۱۹۰ پیکسل) از بالا */
-    .marquee-wrapper {
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      color: #fff;
-      padding: 12px 0;
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      
-      /* ایجاد فاصله دقیق از بالای صفحه */
-      margin-top: 50px; /* این مقدار فاصله ۵ سانتی‌متری فرضی را ایجاد می‌کند */
-    }
+        .borosh-products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .borosh-product-card { background: #ffffff; border: 1px solid #e9ecef; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .borosh-product-card.hide { display: none !important; }
+        
+        .borosh-badge { position: absolute; top: 8px; right: 8px; background: #ef4444; color: #fff; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 20px; z-index: 2; }
+        .borosh-product-img { width: 100%; padding-top: 100%; position: relative; background: #fafafa; }
+        .borosh-product-img img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 85%; max-height: 85%; object-fit: contain; }
+        .borosh-product-info { padding: 12px; display: flex; flex-direction: column; flex-grow: 1; }
+        .borosh-product-name { font-size: 13px; color: #333; line-height: 1.5; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 10px; }
+        .borosh-price-box { margin-top: auto; margin-bottom: 10px; display: flex; flex-direction: column; }
+        .borosh-old-price { font-size: 11px; color: #aaa; text-decoration: line-through; margin-bottom: 2px; }
+        .borosh-main-price { font-size: 14px; font-weight: bold; color: #222; }
+        .borosh-buy-btn { display: block; text-align: center; background: #007bff; color: #fff; text-decoration: none; font-size: 12px; font-weight: bold; padding: 10px; border-radius: 8px; }
 
-    .marquee-inner {
-      display: flex;
-      width: max-content;
-    }
+        /* --- استایل پاپ‌آپ اختصاصی پخش ویدیو آپارات و دکمه‌های کنترل --- */
+        .borosh-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .borosh-modal-content { background-color: #000; width: 90%; max-width: 800px; border-radius: 12px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; }
+        .borosh-modal-close { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 30px; cursor: pointer; z-index: 10; transition: color 0.2s; line-height: 1; }
+        .borosh-modal-close:hover { color: #ff3333; }
+        .borosh-video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+        .borosh-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        
+        .borosh-modal-controls { display: flex; gap: 10px; padding: 15px; background: #111; border-top: 1px solid #222; justify-content: center; }
+        .borosh-control-btn { flex: 1; max-width: 250px; padding: 10px 15px; border: none; border-radius: 8px; font-size: 13px; font-weight: bold; text-align: center; text-decoration: none; cursor: pointer; transition: all 0.2s; font-family: Tahoma, sans-serif; }
+        .borosh-control-btn.download { background-color: #007bff; color: #fff; }
+        .borosh-control-btn.download:hover { background-color: #0056b3; }
+        .borosh-control-btn.share { background-color: #28a745; color: #fff; }
+        .borosh-control-btn.share:hover { background-color: #218838; }
 
-    .marquee-content {
-      display: flex;
-      gap: 60px;
-      padding-left: 60px;
-      white-space: nowrap;
-      animation: marqueeLinear 30s linear infinite; 
-    }
-
-    .marquee-wrapper:hover .marquee-content {
-      animation-play-state: paused;
-    }
-
-    .marquee-content span {
-      font-size: 14px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-    }
-
-    .marquee-content a {
-      color: #ff4b2b;
-      background: #fff;
-      padding: 3px 12px;
-      border-radius: 20px;
-      text-decoration: none;
-      margin-right: 10px;
-      font-size: 12px;
-    }
-
-    .marquee-close-btn {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.3);
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    @keyframes marqueeLinear {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(50%); }
-    }
-
-    /* ۴. بخش بنرهای تصویری تبلیغاتی */
-    .banners-section {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .banners-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 25px;
-    }
-
-    .banner-card {
-      position: relative;
-      height: 250px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-      cursor: pointer;
-    }
-
-    .banner-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.6s ease;
-    }
-
-    .banner-card:hover .banner-bg {
-      transform: scale(1.08);
-    }
-
-    .banner-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to left, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 40px;
-      color: #568296;
-    }
-
-    .banner-overlay h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .banner-overlay p {
-      font-size: 14px;
-      margin-bottom: 20px;
-      color: #e0e0e0;
-      max-width: 80%;
-      line-height: 1.6;
-    }
-
-    .banner-link-btn {
-      align-self: flex-start;
-      background-color: #fff;
-      color: #333;
-      padding: 10px 24px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-
-    .banner-card:hover .banner-link-btn {
-      background-color: #ff4b2b;
-      color: #fff;
-    }
-  </style>
+        @media (min-width: 769px) {
+            .borosh-nav, .borosh-filter-bar { justify-content: center; overflow: visible; }
+            .borosh-item { position: relative; }
+            .borosh-bottom-sheet { position: absolute; bottom: auto; top: 100%; left: auto; right: 0; width: 240px; max-height: 450px; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #eee; display: none; }
+            .borosh-item:hover .borosh-bottom-sheet { display: flex; }
+            .borosh-sheet-header { display: none; }
+            .borosh-overlay.show { display: none !important; }
+            .borosh-products-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        }
+        
+        @media (max-width: 480px) {
+            .borosh-modal-controls { flex-direction: column; align-items: center; }
+            .borosh-control-btn { width: 100%; max-width: none; }
+        }
+    </style>
 </head>
 <body>
-  <header>
 
-    <div class="nav-container">
-      
-      <!-- بخش لوگو همراه با تصویر -->
-      <div class="logo">
-        <a href="#">
-          <!-- به جای آدرس زیر، می‌توانید مسیر عکس خودتان را بگذارید -->
-          <img src="لوگو.png">
-        </a>
+    <div class="borosh-overlay" id="boroshOverlay"></div>
+
+    <!-- ساختار پاپ آپ هوشمند ویدیو همراه با دکمه‌های کنترلی جدید -->
+    <div class="borosh-modal" id="videoModal">
+      <div class="borosh-modal-content">
+        <span class="borosh-modal-close" id="closeModal">&times;</span>
+        <div class="borosh-video-wrapper">
+          <div id="playerContainer"></div>
+        </div>
+        <!-- باکس جدید دکمه‌های کنترل زیر ویدیو -->
+        <div class="borosh-modal-controls">
+            <a href="#" id="downloadVideoBtn" class="borosh-control-btn download" target="_blank">📥 دانلود مستقیم فیلم امروز</a>
+            <button id="shareVideoBtn" class="borosh-control-btn share">🔗 کپی لینک اشتراک‌گذاری</button>
+        </div>
       </div>
-
-      <!-- بخش منوی اصلی -->
-	  <!-- منوی اصلی شما -->
-<ul class="menu-list">
-  <li><a href="#">خانه</a></li>
-  <li><a href="https://azadfatehi.github.io/Boresh/new.html">درباره ما</a></li>
-
-		  <li><a href="https://azadfatehi.github.io/Boresh/kh.html">فروشگاه</a></li>
-
-  <!-- دکمه تماس با ما -->
-  <li><a href="#" id="contactBtn">تماس با ما</a></li>
-</ul>
-
-<!-- ساختار پنجره پاپ‌آپ (Modal) -->
-<!-- ساختار پنجره پاپ‌آپ (Modal) همراه با اطلاعات تماس و فرم پیام -->
-<div id="contactModal" class="modal">
-  <div class="modal-content">
-    <!-- دکمه ضربدر برای بستن -->
-    <span class="close-btn">&times;</span>
-    
-    <h3>تماس با ما</h3>
-    
-    <!-- بخش اول: اطلاعات تماس سریع -->
-    <ul class="modal-contact-list">
-      <li>☎️ <strong>تلفن:</strong> <a href="tel:02112345678">۰9137892830</a></li>
-      <li>📧 <strong>ایمیل:</strong> <a href="mailto:info@site.com">yas17010812@gmail.com</a></li>
-    </ul>
-
-    <!-- بخش دوم: فرم ارسال پیام مستقیم -->
-    <div class="contact-form-container">
-      <h4>"ارسال نظر، انتقاد و پيشنهاد"</h4><br>
-	 <div class="contact-form-container">
-  <!-- باکس پیغام موفقیت آمیز (در حالت عادی پنهان است) -->
-  <div id="successMsg" class="success-message">
-    <span>✅</span> پیام شما دریافت شد با تشکر از حسن توجه شما مطمئن باشید بررسی و اقدام می گردد </div>
-
-  <form id="directContactForm" action="#" method="POST">
-    
-    <div class="form-group">
-      <label for="userName">نام و نام خانوادگی:</label>
-      <input type="text" id="userName" name="name" required placeholder="نام خود را وارد کنید...">
     </div>
 
-    <div class="form-group">
-      <label for="userEmail">آدرس ایمیل:</label>
-      <input type="email" id="userEmail" name="email" required placeholder="name@example.com">
-    </div>
+    <div class="borosh-header-box">
+        <div class="borosh-top">
+            <a href="/" class="borosh-logo"><img src="لوگو.png" alt="لوگو"></a>
+            <div class="borosh-left">
+                <div class="borosh-search">
+                    <input type="text" id="boroshSearchInput" placeholder="جستجو...">
+                </div>
+                <div class="borosh-ham-container">
+                    <button type="button" class="borosh-btn">☰</button>
+                    <ul class="borosh-ham-list">
+                        <li><a href="/register">👤 ثبت نام</a></li>
+                        <li><a href="/about">ℹ️ درباره ما</a></li>
+                        <li><a href="/contact">📞 تماس با ما</a></li>
+                        <li><a href="/ads">📢 پذیرش تبلیغات</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-    <div class="form-group">
-      <label for="userMessage">متن پیام:</label>
-      <textarea id="userMessage" name="message" rows="4" required placeholder="پیام خود را اینجا بنویسید..."></textarea>
-    </div>
+        <nav class="borosh-nav">
+            <div class="borosh-item"><a href="#" id="learnMenu" class="borosh-link">آموزش</a>
+                <div class="borosh-bottom-sheet">
+                    <div class="borosh-sheet-header"><span class="borosh-sheet-title">لوازم التحریر</span><span class="borosh-sheet-close">✕</span></div>
+                </div>
+            </div>
+<div class="borosh-item">
+    <span class="borosh-link">کانال های منتخب ▾</span>
+    <div class="borosh-bottom-sheet">
+        <div class="borosh-sheet-header">
+            <span class="borosh-sheet-title">خبر</span>
+            <span class="borosh-sheet-close">✕</span>
+        </div>
+        <ul class="borosh-sheet-content">
+            
+            <!-- دکمه بازگشت برای بستن منوی کشویی بدون تغییر چیدمان سایت -->
+            <li>
+                <a href="#" class="borosh-sheet-close" style="color: #e74c3c; font-weight: bold;">⬅️ بازگشت به سایت</a>
+            </li>
 
-    <button type="submit" class="submit-btn">ارسال پیام</button>
-  </form>
+            <!-- کانال اول: اصفهان ما (ورود مستقیم و بدون خطای حدود بلنک) -->
+            <li>
+                <a href="https://web.eitaa.com/#@esfahan_ma" target="_blank" rel="noopener noreferrer">اصفهان ما</a>
+            </li>
+
+            <!-- کانال دوم: آیدی کانال دوم خود را بعد از علامت @ بنویسید -->
+            <li>
+                <a href="https://eitaa.com" target="_blank" rel="noopener noreferrer">نام کانال دوم</a>
+            </li>
+
+            <!-- کانال سوم: آیدی کانال سوم خود را بعد از علامت @ بنویسید -->
+            <li>
+                <a href="https://eitaa.com" target="_blank" rel="noopener noreferrer">نام کانال سوم</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+            <div class="borosh-item"><a href="#" id="calendarMenu" class="borosh-link">تقویم تاریخ</a></div>
+			<!-- ۱. بخش دکمه اصلی (متن فیلم و سریال شما) -->
+<div class="borosh-item">
+    <!-- با کلیک روی این لینک، تابع باز کردن باکس اجرا می‌شود -->
+    <a href="javascript:void(0);" onclick="openMoviePage()" class="borosh-link">فیلم و سریال</a>
 </div>
 
+<!-- ۲. باکس مخفی تمام‌صفحه مخصوص نمایش لایه فیلم (به چیدمان اصلی آسیب نمی‌زند) -->
+<div id="movieOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 999999; overflow: hidden;">
+    
+    <!-- دکمه بستن و بازگشت به سایت شما (بسیار مهم برای تجربه کاربری موبایل) -->
+    <button onclick="closeMoviePage()" style="position: absolute; top: 15px; right: 15px; z-index: 1000000; background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 10px 15px; border-radius: 20px; font-family: tahoma; font-size: 14px; cursor: pointer; backdrop-filter: blur(5px);">
+        *بازگشت به برش*
+    </button>
+    
+    <!-- آی‌فریم بارگذاری سایت مقصد با دسترسی کامل برای پخش ویدیوها -->
+    <iframe id="movieFrame" src="" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
+</div>
 
-  </header>
-<style>
-
-  <!-- هدر اصلی سایت در بالاترین نقطه قرار گرفت -->
-  <header class="site-header">
-    <h1>لوگو و منوی اصلی وب‌سایت شما (هدر)</h1>
-  </header>
-
-  <!-- نوار روان حالا با فاصله ۵۰ پیکسلی زیر هدر نمایش داده می‌شود -->
-  <div class="marquee-wrapper" id="marqueeBanner">
-    <div class="marquee-inner">
-      <div class="marquee-content">
-        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
-        <span>⚡ محصولات جدید بخش پوشاک زمستانه شارژ شد! <a href="#">ورود به فروشگاه</a></span>
-        
-        <!-- تکرار برای چرخه بی‌وقفه -->
-        <span>🔥 ۵۰٪ تخفیف ویژه به مناسبت سال نو فقط تا پایان امشب! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 ارسال رایگان برای تمامی خریدهای بالای ۵۰۰ هزار تومان با کد FIRST</span>
-      </div>
-    </div>
-    <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
-  </div>
-
-  <!-- بخش بنرهای تصویری تبلیغاتی -->
-  <section class="banners-section">
-    <div class="banners-grid">
-      <!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بنرهای متحرک و کوچک</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #568296;
-            padding: 50px 0;
-            overflow-x: hidden; /* جلوگیری از اسکرول خوردن کل صفحه */
-        }
-
-        /* کانتینر اصلی ریل حرکتی */
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            background: #568296;
-            padding: 20px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            display: flex;
-        }
-
-        /* ریلی که کارت‌ها درون آن حرکت می‌کنند */
-        .marquee-track {
-            display: flex;
-            gap: 20px;
-            /* اجرای انیمیشن حرکت مداوم */
-            animation: scroll-left 25s linear infinite;
-            width: max-content;
-        }
-
-        /* متوقف شدن حرکت هنگام نگه داشتن موس */
-        .marquee-container:hover .marquee-track {
-            animation-play-state: paused;
-        }
-
-        /* استایل بنرهای کوچک شده */
-        .banner-card {
-            position: relative;
-            width: 280px; /* اندازه کوچک و ثابت برای کنار هم قرار گرفتن */
-            height: 160px;
-            border-radius: 12px;
-            overflow: hidden;
-            flex-shrink: 0; /* جلوگیری از فشرده شدن کارت‌ها */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-
-        .banner-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.4s ease;
-        }
-
-        .banner-card:hover .banner-bg {
-            transform: scale(1.08);
-        }
-
-        .banner-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.3));
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 15px;
-            color: #568296;
-        }
-
-        .banner-overlay h2 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .banner-overlay p {
-            font-size: 0.75rem;
-            margin-bottom: 10px;
-            color: #d1d1d6;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis; /* سه نقطه در صورت طولانی بودن متن */
-        }
-
-        .banner-link-btn {
-            align-self: flex-start;
-            padding: 5px 12px;
-            background-color: #ff4757;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 0.7rem;
-            transition: background 0.2s;
-        }
-
-        .banner-link-btn:hover {
-            background-color: #ff6b81;
-        }
-
-        /* تعریف انیمیشن حرکت از راست به چپ (برای حالت RTL) */
-        @keyframes scroll-left {
-            100% {
-                transform: translateX(0);
-            }
-            0% {
-                /* حرکت به اندازه نصف طول کل ریل (چون آیتم‌ها تکرار شده‌اند) */
-                transform: translateX(50%);
-            }
-        }
-		@keyframes scroll-RTL{
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
+<!-- ۳. کدهای جاوااسکریپت جهت مدیریت لمس و باز شدن صفحه -->
+<script>
+function openMoviePage() {
+    // ۱. آدرس سایت مقصد را به آی‌فریم تزریق می‌کند
+    document.getElementById('movieFrame').src = "https://hamahang.net";
+    // ۲. باکس تمام‌صفحه را نمایش می‌دهد
+    document.getElementById('movieOverlay').style.display = "block";
+    // ۳. اسکرول صفحه اصلی پشت باکس را قفل می‌کند تا چیدمان تکان نخورد
+    document.body.style.overflow = "hidden";
 }
 
-    </style>
-
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بنرهای متحرک با عکس درون کادر</title>
-    <style>
-  body{background-color:#568296;}
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #568296;
-            padding: 50px 0;
-            overflow-x: hidden;
-        }
-
-        /* کانتینر ریل حرکتی */
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            background: #568296;
-            padding: 20px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            display: flex;
-        }
-
-        /* ریل حرکت کارت‌ها */
-        .marquee-track {
-            display: flex;
-            gap: 20px;
-            animation: scroll-left 25s linear infinite;
-            width: max-content;
-        }
-
-        /* توقف حرکت با هوور موس */
-        .marquee-container:hover .marquee-track {
-            animation-play-state: paused;
-        }
-
-        /* تگ لینک که کل کارت را در بر می‌گیرد */
-        .banner-card-link {
-            text-decoration: none;
-            display: block;
-            flex-shrink: 0;
-        }
-
-        /* استایل جدید کارت: چیدمان کنار هم عکس و متن */
-        .banner-card {
-            display: flex;
-            width: 340px; /* کمی عرض را بیشتر کردیم تا عکس و متن جا شوند */
-            height: 140px;
-            background-color: #ffffff;
-            border: 1px solid #565296;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* افکت بالا آمدن کارت هنگام هوور */
-        .banner-card-link:hover .banner-card {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-
-        /* بخش تصویر درون کادر */
-        .banner-img-box {
-            width: 40%; /* ۴۰ درصد از فضای کارت به عکس اختصاص دارد */
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .banner-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* حفظ تناسبات تصویر و پر کردن کادر */
-            transition: transform 0.4s ease;
-        }
-
-        .banner-card-link:hover .banner-img-box img {
-            transform: scale(1.08); /* زوم ملایم عکس با هوور */
-        }
-
-        /* بخش محتوای متنی و دکمه */
-        .banner-content {
-            width: 60%; /* ۶۰ درصد فضا برای متن و دکمه */
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* پخش کردن متوازن محتوا از بالا تا پایین */
-            background-color: #565296;
-        }
-
-        .banner-content h2 {
-            font-size: 0.95rem;
-            color: #ffffff;
-            font-weight: bold;
-            line-height: 1.4;
-        }
-
-        .banner-content p {
-            font-size: 0.75rem;
-            color: #ffffff;
-            margin-top: 4px;
-            /* خلاصه‌سازی متن‌های طولانی به دو خط */
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;  
-            overflow: hidden;
-        }
-
-        /* دکمه خرید */
-        .banner-link-btn {
-            align-self: flex-start;
-            padding: 6px 14px;
-            background-color: #0071e3; /* رنگ آبی مدرن اپل */
-            color: #ffffff;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.7rem;
-            text-align: center;
-        }
-
-        /* انیمیشن حرکت (راست به چپ) */
-        @keyframes scroll-left {
-            100% { transform: translateX(0); }
-            0% { transform: translateX(50%); }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="marquee-container">
-        <div class="marquee-track">
-            
-            <!-- کارت شماره ۱ (لینک مقصد را در href قرار دهید) -->
-            <a href="https://web.eitaa.com/#@axs_peykaniha" class="banner-card-link">
-                <div class="banner-card"> 
-                    <div class="banner-img-box">
-                        <!-- عکس واقعی محصول درون تگ img -->
-                        <img src="pyk.png" alt="ساعت هوشمند">
-                    </div>
-                    <div class="banner-content"> 
-                        <div>
-                            <h2>کانال عکس پیکانیها</h2> <br>
-							
-                            <p>یادآور گذشته های تلخ و شیرین و اطلاع از رویدادهای پیکان </p> 
-                        </div>
-                        <span class="banner-link-btn">جهت ورود کلیک کنید  </span> 
-                    </div> 
-                </div>
-            </a>
-
-            <!-- کارت شماره ۲ -->
-
-<a href="https://www.msn.com/en-us/sports/soccer/fifa_world_cup" target="_blank" class="banner-card-link" style="text-decoration: none; display: block;">
-    <div class="banner-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fff;"> 
-        <div class="banner-img-box">
-            <img src="jam.png" alt="جام جهانی">
-        </div>
-        <div class="banner-content"> 
-            <div>
-                <h2>آخرین اخبار ورزشی </h2> 
-                <p>اطلاع از آخرین اخبار و رویدادهای جام جهانی</p> 
-            </div>
-            
-            <!-- بخش راهنمای کامل، برجسته و کاملاً قابل مشاهده -->
-            <div class="translation-guide" style="background-color: #fff9e6; border-right: 4px solid #ffcc00; padding: 8px 12px; margin: 10px 0; border-radius: 4px; text-align: right;">
-                <span style="font-size: 13px; color: #b78103; font-weight: bold; display: block; line-height: 1.6;">
-                    💡 ترجمه به فارسی:
-                </span>
-                <span style="font-size: 12px; color: #555; display: block; margin-top: 4px; line-height: 1.6;">
-                     پس از ورود راست کلیک کرده گزینه <strong>Translate to Persian</strong>  را درکامپیوتر انتخاب کنید <strong>درموبایل با سه خطی بالا این کار انجام شود</strong>                </span>
-            </div>
-
-            <span class="banner-link-btn" style="display: inline-block; margin-top: 10px;">ورود به دنیای ورزش</span> 
-        </div> 
-    </div>
-</a>
-
-<!-- این اسکریپت با ارسال اطلاعات زبان مقصد، مترجم مرورگر را بیدار می‌کند -->
-<script>
-function triggerBrowserTranslate(event, url) {
-    event.preventDefault(); // جلوگیری از رفتار عادی لینک
-    
-    // باز کردن سایت MSN در یک پنجره جدید
-    var newTab = window.open(url, '_blank');
-    
-    if (newTab) {
-        // به محض شروع لود سایت، به مرورگر می‌گوییم که این صفحه باید به زبان فارسی نمایش داده شود
-        newTab.blur();
-        window.focus();
-        setTimeout(function() {
-            newTab.focus();
-        }, 500);
-    }
+function closeMoviePage() {
+    // ۱. باکس را دوباره مخفی می‌کند
+    document.getElementById('movieOverlay').style.display = "none";
+    // ۲. آدرس آی‌فریم را خالی می‌کند تا مصرف اینترنت و ویدیو قطع شود
+    document.getElementById('movieFrame').src = "";
+    // ۳. اسکرول صفحه اصلی را به حالت عادی برمی‌گرداند
+    document.body.style.overflow = "auto";
 }
 </script>
 
-            <!-- کارت شماره ۳ -->
-            <a href="https://example.com" class="banner-card-link">
-                <div class="banner-card"> 
-                    <div class="banner-img-box">
-                        <img src="https://unsplash.com" alt="مچ بند ورزشی">
-                    </div>
-                    <div class="banner-content"> 
-                        <div>
-                            <h2>مچ‌بندهای ورزشی</h2> 
-                            <p>بهترین همراه هوشمند برای تناسب اندام روزانه شما</p> 
-                        </div>
-                        <span class="banner-link-btn">تخفیف ویژه</span> 
-                    </div> 
-                </div>
-            </a>
+            <div class="borosh-item"><a href="/catalog/others" class="borosh-link">سایر</a></div>
+        </nav>
+    </div>
 
-            <!-- تکرار کارت‌ها برای ایجاد افکت حرکت بی‌پایان -->
-            <a href="https://example.com" class="banner-card-link">
-                <div class="banner-card"> 
-                    <div class="banner-img-box">
-                        <img src="https://unsplash.com" alt="ساعت هوشمند">
-                    </div>
-                    <div class="banner-content"> 
-                        <div>
-                            <h2>ساعت هوشمند سری جدید</h2> 
-                            <p>امکانات بی‌نظیر، پایش سلامت و باتری قدرتمند</p> 
-                        </div>
-                        <span class="banner-link-btn">خرید کالا</span> 
-                    </div> 
-                </div>
-            </a>
-
-            <a href="https://example.com" class="banner-card-link">
-                <div class="banner-card"> 
-                    <div class="banner-img-box">
-                        <img src="https://unsplash.com" alt="ساعت کلاسیک">
-                    </div>
-                    <div class="banner-content"> 
-                        <div>
-                            <h2>ساعت کلاسیک دیجیتال</h2> 
-                            <p>طراحی شیک و بدنه ضد استیل با دوام بالا</p> 
-                        </div>
-                        <span class="banner-link-btn">مشاهده</span> 
-                    </div> 
-                </div>
-            </a>
-
-            <a href="https://example.com" class="banner-card-link">
-                <div class="banner-card"> 
-                    <div class="banner-img-box">
-                        <img src="https://unsplash.com" alt="مچ بند ورزشی">
-                    </div>
-                    <div class="banner-content"> 
-                        <div>
-                            <h2>مچ‌بندهای ورزشی</h2> 
-                            <p>بهترین همراه هوشمند برای تناسب اندام روزانه شما</p> 
-                        </div>
-                        <span class="banner-link-btn">تخفیف ویژه</span> 
-                    </div> 
-                </div>
-            </a>
-
+    <div class="borosh-catalog-container">
+        <h2 class="borosh-catalog-title">کاتالوگ و خرید محصولات</h2>
+        <div class="borosh-filter-bar">
+            <button class="borosh-filter-btn active" data-filter="all">همه محصولات</button>
+            <button class="borosh-filter-btn" data-filter="stationery">لوازم التحریر</button>
+            <button class="borosh-filter-btn" data-filter="confectionery">لوازم قنادی</button>
+            <button class="borosh-filter-btn" data-filter="sewing">خیاطی</button>
+            <button class="borosh-filter-btn" data-filter="haberdashery">خرازی</button>
+            <button class="borosh-filter-btn" data-filter="others">سایر</button>
         </div>
+        <div class="borosh-products-grid" id="productsGrid"></div>
     </div>
+    <script>
+    // ۱. دیتابیس کدهای پخش و لینک‌های دانلود مستقیم آپارات برای کل سال (فرمت: "ماه-روز")
+    const aparatVideos = {
+        "04-28": { code: "f773r25", download: "https://aparat.com" }, // روز ۲۸ تیر
+        "04-30": { code: "f773r25", download: "https://aparat.com" }, // امروز ۲۹ تیر (برای تست)
+        "05-01": { code: "m5n6o7p", download: "https://aparat.com" }, // روز ۱ مرداد
+        // بقیه ۳۶۵ روز سال را بر اساس نیاز خود به همین شکل دو فرامتی پر کنید...
+    };
 
-</body>
-</html>
+    // المان‌های مربوط به پاپ‌آپ ویدیو و دکمه‌های کنترل جدید
+    const modal = document.getElementById("videoModal");
+    const closeModalBtn = document.getElementById("closeModal");
+    const playerContainer = document.getElementById("playerContainer");
+    const downloadVideoBtn = document.getElementById("downloadVideoBtn");
+    const shareVideoBtn = document.getElementById("shareVideoBtn");
 
-</body>
-</html>
-
-  </section>
-
-  <script>
-    function closeMarquee() {
-      document.getElementById('marqueeBanner').style.display = 'none';
-    }
-  </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>فروشگاه برش</title>
-  <style>
-  h4{font-family:"B",titr;}
-    /* ۱. صفر کردن فاصله‌های پیش‌فرض مرورگر */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Tahoma, sans-serif;
-      background-color: #568296;
-    }
-
-    /* ۲. استایل نوار سربرگ */
-    header {
-      background-color: #568296; /* پس‌زمینه سفید برای جلوه بهتر تصویر لوگو */
-      width: 100%;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* سایه ملایم زیر سربرگ */
-      position: relative;
-    }
-
-    /* ۳. چیدمان داخل سربرگ */
-    .nav-container {
-      max-width: 1200px;         /* محدود کردن عرض کل محتوا */
-      margin: 0 auto;            /* وسط‌چین کردن محتوا در دسکتاپ */
-      display: flex;             /* قرارگیری لوگو و منو در یک سطر */
-      justify-content: space-between; /* هل دادن لوگو به راست و منو به چپ */
-      align-items: center;       /* تراز عمودی دقیق در وسط سطر */
-      padding: 0 20px;
-      height: 80px;              /* ارتفاع سربرگ هماهنگ با سایز لوگو */
-    }
-
-    /* ۴. تنظیمات تصویر لوگو */
-    .logo {
-      display: flex;
-      align-items: center;       /* تراز عمودی عکس */
-    }
-
-    .logo img {
-      height: 75px;              /* کنترل ارتفاع عکس لوگو برای هماهنگی با سربرگ */
-      width: auto;               /* تنظیم خودکار عرض برای جلوگیری از دفرمه شدن */
-      display: block;
-    }
-
-    /* ۵. استایل گزینه‌های منو اصلی */
-    .menu-list {
-      list-style: none;
-      display: flex;             /* چیدمان افقی گزینه‌های منو */
-    }
-
-    .menu-list > li {
-      position: relative;        /* نقطه اتکا برای موقعیت‌دهی منوی کشویی */
-    }
-
-    .menu-list > li > a {
-      display: block;
-      color: white;            /* رنگ متن منو */
-      padding: 30px 20px;        /* ایجاد محدوده کلیک بزرگ هماهنگ با ارتفاع */
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    /* تغییر رنگ متن منو با حرکت موس */
-    .menu-list > li > a:hover {
-      color: black;            /* تغییر رنگ به آبی (یا رنگ سازمانی شما) */
-    }
-
-    /* ۶. استایل منوی کشویی (زیرمنو) */
-    .dropdown-content {
-      display: none;             /* پنهان بودن در حالت عادی */
-      position: absolute;
-      top: 100%;                 /* باز شدن دقیقاً چسبیده به زیر منو */
-      right: 0;                  /* تراز شدن از سمت راست */
-      background-color: #ffffff;
-      min-width: 180px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      border-radius: 4px;        /* گرد شدن ملایم گوشه‌های کادر زیرمنو */
-      list-style: none;
-      padding: 8px 0;
-      z-index: 100;
-    }
-
-    .dropdown-content li a {
-      color: #555555;
-      padding: 10px 20px;
-      text-decoration: none;
-      display: block;
-      font-size: 14px;
-      transition: background 0.2s;
-    }
-
-    /* هاور گزینه‌های داخل کشو */
-    .dropdown-content li a:hover {
-      background-color: #f8f9fa;
-      color: #007bff;
-    }
-
-    /* نمایش منوی کشویی با حرکت موس */
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    /* محتوای نمونه بدنه سایت */
-    .main-content {
-      max-width: 1200px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
-	/* ظرف اصلی کادر و دکمه جستجو */
-.search-box {
-  display: flex;
-  align-items: center;
-}
-
-/* کادر متنی ورودی */
-.search-input {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 0 4px 4px 0; /* گرد کردن گوشه‌های سمت راست مخصوص صفحات فارسی */
-  outline: none;
-  font-family: inherit;
-  font-size: 14px;
-  width: 180px;
-  transition: all 0.3s ease; /* انیمیشن نرم برای تغییر سایز */
-}
-
-/* بزرگتر شدن کادر هنگام کلیک کاربر */
-.search-input:focus {
-  border-color: #007bff;
-  width: 220px;
-}
-
-/* دکمه جستجو */
-.search-button {
-  padding: 8px 15px;
-  background-color: #007bff; /* رنگ آبی دکمه */
-  color: white;
-  border: none;
-  border-radius: 4px 0 0 4px; /* گرد کردن گوشه‌های سمت چپ دکمه */
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 14px;
-  transition: background 0.2s;}
-  
-.search-box {
-  display: flex;
-  align-items: center;
-  float: left; /* چسباندن کل باکس به سمت چپ */
-}
-.search-input {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-radius: 0 4px 4px 0; /* گوشه‌های گرد سمت راست برای هماهنگی با زبان فارسی */
-  outline: none;
-  font-size: 13px;
-}
-
-.search-button {
-  padding: 6px 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px 0 0 4px; /* گوشه‌های گرد سمت چپ */
-  cursor: pointer;
-  font-size: 13px;
-}
-
-        .floating-back-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 55px;
-            height: 55px;
-            background-color: #ff5722;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
-            text-decoration: none;
-            z-index: 1000;
-        }
-
-/* تغییر رنگ دکمه با بردن موس روی آن */
-.search-button:hover {
-  background-color: #0056b3;
-}
-/* ۱. استایل کلی پس‌زمینه تیره پشت پاپ‌آپ */
-.modal {
-  display: none;             /* در حالت عادی پنهان است */
-  position: fixed;           /* ثابت ماندن روی کل صفحه */
-  z-index: 999;              /* قرار گرفتن روی تمام عناصر */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5); /* سیاه نیمه شفاف */
-  direction: rtl;
-}
-
-/* ۲. جعبه سفید محتوای پاپ‌آپ */
-.modal-content {
-  background-color: #ffffff;
-  margin: 15% auto;          /* فاصله از بالا و وسط‌چین شدن افقی */
-  padding: 25px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 450px;          /* حداکثر عرض کادر پاپ‌آپ */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  position: relative;
-  animation: fadeIn 0.3s ease-out; /* انیمیشن باز شدن ملایم */
-}
-
-/* انیمیشن ظاهر شدن */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ۳. دکمه ضربدر بستن */
-.close-btn {
-  position: absolute;
-  top: 15px;
-  left: 15px;                /* قرارگیری در سمت چپ کادر راست‌چین */
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  line-height: 1;
-}
-
-.close-btn:hover {
-  color: #333;
-}
-
-/* ۴. استایل لیست اطلاعات داخل پاپ‌آپ */
-.modal-content h3 {
-  margin-bottom: 20px;
-  color: #2c3e50;
-  border-bottom: 2px solid #f1f1f1;
-  padding-bottom: 10px;
-}
-
-.modal-contact-list {
-  list-style: none;
-  padding: 0;
-}
-
-.modal-contact-list li {
-  margin-bottom: 15px;
-  font-size: 15px;
-  color: #555;
-}
-
-.modal-contact-list li a {
-  color: #007bff;
-  text-decoration: none;
-  direction: ltr;
-  display: inline-block;
-}
-
-.modal-contact-list li a:hover {
-  text-decoration: underline;
-}
-/* تنظیمات بخش فرم درون پاپ‌آپ */
-.contact-form-container {
-  margin-top: 20px;
-  border-top: 1px solid #eee;
-  padding-top: 15px;
-}
-
-.contact-form-container h4 {
-  color: #333;
-  margin-bottom: 15px;
-  font-size: 15px;
-}
-
-/* فاصله استاندارد برای گروه‌های فرم */
-.form-group {
-  margin-bottom: 15px;
-  text-align: right;
-}
-
-.form-group label {
-  display: block;
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-/* استایل کادرهای ورودی متن و ایمیل و پیام */
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: Tahoma, sans-serif;
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-/* تغییر رنگ کادر هنگام فوکوس کاربر */
-.form-group input:focus,
-.form-group textarea:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-}
-
-/* غیرقابل تغییر کردن سایز افقی تکست‌اریا توسط کاربر */
-.form-group textarea {
-  resize: vertical;
-}
-
-/* استایل دکمه ارسال فرم */
-.submit-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #28a745; /* رنگ سبز برای حس ارسال موفق */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-family: Tahoma, sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.submit-btn:hover {
-  background-color: #218838;
-}
-/* استایل کادر پیغام موفقیت */
-.success-message {
-  display: none;             /* در حالت عادی پنهان است */
-  background-color: #d4edda; /* پس‌زمینه سبز ملایم */
-  color: #155724;            /* رنگ متن سبز تیره */
-  border: 1px solid #c3e6cb;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  font-size: 14px;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* کلاس کمکی برای فعال‌سازی انیمیشن ظهور پیام */
-.success-message.show {
-  display: block;
-  animation: slideDown 0.4s ease-out; /* اجرای انیمیشن حرکت به پایین */
-}
-
-/* تعریف انیمیشن حرکت و ظهور نرم */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-/* کدهای جدید بنر روان و بنرهای تصویری */
-  </style>
-
-
-
- 
-   
-	<style>
-    {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Tahoma, Arial, sans-serif;
-      background-color: #568296;
-      color: #333;
-    }
-
-    /* ۲. استایل هدر سایت (بالاترین بخش صفحه) */
-    .site-header {
-      text-align: center;
-      padding: 20px 0;
-      background-color: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      height: 120px; /* تنظیم ارتفاع مشخص برای هدر */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .site-header h1 {
-      font-size: 26px;
-      color: #222;
-    }
-</style>
-
-
-  <div class="marquee-wrapper" id="marqueeBanner">
-    <div class="marquee-inner">
-      <div class="marquee-content">
-        <span>🔥 خرید از برش با کمترین قیمت،بهترین کیفیت وتایید اصالت کالا! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 فروشگاه برش مطمئن و در دسترس </span>
-        <span>⚡ شارژ محصولات در اسرع وقت وبا سفارش مشتری! <a href="#">ورود به فروشگاه</a></span>
+    // تابع دریافت تاریخ روز ماه شمسی دو رقمی انگلیسی (مثل "04-28")
+    function getPersianDateKey() {
+        const today = new Date();
+        const formatter = new Intl.DateTimeFormat('fa-IR', { month: 'numeric', day: 'numeric' });
+        const formattedParts = formatter.formatToParts(today);
         
-        <!-- تکرار برای چرخه بی‌وقفه -->
-        <span>🔥 خرید از برش با کمترین قیمت،بهترین کیفیت و تایید اصالت کالا! <a href="#">مشاهده محصولات</a></span>
-        <span>🚀 فروشگاه برش مطمئن و در دسترس </span>
-		        <span>⚡ شارژ محصولات در اسرع وقت وبا سفارش مشتری! <a href="#">ورود به فروشگاه</a></span>
+        let month = "", day = "";
+        formattedParts.forEach(part => {
+            if (part.type === 'month') month = part.value;
+            if (part.type === 'day') day = part.value;
+        });
 
-      </div>
-    </div>
-    <button class="marquee-close-btn" onclick="closeMarquee()">×</button>
-  </div>
-  
-  <!-- بخش بنرهای تصویری تبلیغاتی -->
-  <section class="banners-section">
-    <div class="banners-grid">
-      
-  </section>
-      <style>
-      /* ایجاد فاصله دقیق از بالای صفحه */
-      margin-top: 50px; /* این مقدار فاصله ۵ سانتی‌متری فرضی را ایجاد می‌کند */
+        const faToEn = n => n.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+        month = faToEn(month);
+        day = faToEn(day);
+
+        const pad = num => num.toString().padStart(2, '0');
+        return pad(month) + "-" + pad(day);
     }
 
-    .marquee-inner {
-      display: flex;
-      width: max-content;
-    }
+    // عملکرد کلیک روی گزینه آموزش
+    document.getElementById("learnMenu").addEventListener("click", function(e) {
+        e.preventDefault(); 
+        
+        var dateKey = getPersianDateKey(); 
+        var videoData = aparatVideos[dateKey]; 
 
-    .marquee-content {
-      display: flex;
-      gap: 60px;
-      padding-left: 60px;
-      white-space: nowrap;
-      animation: marqueeLinear 30s linear infinite; 
-    }
-
-    .marquee-wrapper:hover .marquee-content {
-      animation-play-state: paused;
-    }
-
-    .marquee-content span {
-      font-size: 14px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-    }
-
-    .marquee-content a {
-      color: #ff4b2b;
-      background: #fff;
-      padding: 3px 12px;
-      border-radius: 20px;
-      text-decoration: none;
-      margin-right: 10px;
-      font-size: 12px;
-    }
-
-    .marquee-close-btn {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.3);
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    @keyframes marqueeLinear {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(50%); }
-    }
-
-    /* ۴. بخش بنرهای تصویری تبلیغاتی */
-    .banners-section {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .banners-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 25px;
-    }
-
-    .banner-card {
-      position: relative;
-      height: 250px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-      cursor: pointer;
-    }
-
-    .banner-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.6s ease;
-    }
-
-    .banner-card:hover .banner-bg {
-      transform: scale(1.08);
-    }
-
-    .banner-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to left, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 40px;
-      color: #fff;
-    }
-
-    .banner-overlay h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .banner-overlay p {
-      font-size: 14px;
-      margin-bottom: 20px;
-      color: #e0e0e0;
-      max-width: 80%;
-      line-height: 1.6;
-    }
-
-    .banner-link-btn {
-      align-self: flex-start;
-      background-color: #fff;
-      color: #333;
-      padding: 10px 24px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-
-    .banner-card:hover .banner-link-btn {
-      background-color: #ff4b2b;
-      color: #fff;
-    }
-	    .marquee-wrapper {
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      color: #fff;
-      padding: 12px 0;
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-
-  </style>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نمایش ۴ کارت در یک سطر</title>
-    <style>
-        body {
-            font-family: Tahoma, Arial, sans-serif;
-            background-color: #568296;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h2 {
-            color: #ffffff;
-            margin-bottom: 25px;
-        }
-        /* گرید هوشمند برای چیدمان دقیق ۴ کارت در یک سطر */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* تقسیم دقیق به ۴ ستون مساوی */
-            gap: 20px; /* فاصله استاندارد بین کارت‌ها */
-            width: 100%;
-            max-width: 1200px; /* حداکثر عرض کل جعبه */
-            box-sizing: border-box;
-        }
-        .card {
-            background: #565296;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #e0e0e0;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* چیدمان منظم دکمه‌ها در پایین کارت */
-            min-height: 200px; /* ارتفاع هماهنگ برای تمام کارت‌ها */
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
-        .card h3 {
-            color: #ffffff;
-            margin-top: 0;
-            font-size: 16px;
-        }
-        .card p {
-            color: #ffffff;
-            font-size: 13px;
-            line-height: 1.6;
-            margin: 10px 0 20px 0;
-        }
-        .card-btn {
-            display: white;
-            padding: 10px;
-            background-color: #0078d4;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-        .card-btn:hover {
-            background-color: #005a9e;
-        }
-
-        /* واکنش‌گرایی: تنظیم ظاهر در تبلت و موبایل */
-        @media (max-width: 992px) {
-            .cards-container {
-                grid-template-columns: repeat(2, 1fr); /* در تبلت تبدیل به ۲ ستون می‌شود */
-            }
-        }
-        @media (max-width: 576px) {
-            .cards-container {
-                grid-template-columns: 1fr; /* در موبایل تبدیل به ۱ ستون می‌شود */
-            }
-        }
-		.glass-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05); /* پس‌زمینه بسیار ملایم شیشه‌ای */
-  padding: 15px 25px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: inline-block;
-  margin-bottom: 25px;
-  backdrop-filter: blur(5px);
-}
-
-    </style>
-</head>
-<body>
-
-
-  
-<h2 class="glass-title">آموزشهای رایگان و کاربردی</h2><br><br>
-    
-    
-    
-    <!-- باکس اصلی که ۴ کارت امروز را در یک سطر نمایش می‌دهد -->
-    <div id="daily-cards-box" class="cards-container"></div>
-
-    <script>
-        // ۱. بانک اطلاعاتی سالانه (نمونه با ۴ کارت برای روزهای سال)
-        const yearlyCardsData = {
-            1: [
-                { title: "نکته اموزشی امروز", desc: "با آموزش های خیاطی ما همراه باشید ", link: "#" },
-                { title: "تحلیل فنی بازی‌ها ۲", desc: "بررسی تاکتیک تیم‌ها توسط کارشناسان ورزشی.", link: "#" },
-                { title: "ویدیو خلاصه بازی ۳", desc: "مشاهده گل‌ها و لحظات حساس بازی‌های دیشب.", link: "#" },
-                { title: "جدول امتیازات ۴", desc: "آخرین وضعیت و رده‌بندی تیم‌ها در جدول مسابقات.", link: "#" }
-            ]
-            // برای بقیه روزها (2 تا 365) نیز می‌توانید به همین ترتیب ۴ کارت تعریف کنید.
-        };
-
-        // ۲. محاسبه شماره روز سال (۱ تا ۳۶۵)
-        function getDayOfYear() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = now - start;
-            const oneDay = 1000 * 60 * 60 * 24;
-            return Math.floor(diff / oneDay);
-        }
-
-        // ۳. قرار دادن کارت‌ها در صفحه
-        function displayYearlyCards() {
-            const container = document.getElementById('daily-cards-box');
-            const dayOfYear = getDayOfYear();
+        if (videoData) {
+            // تفکیک آدرس برای جلوگیری از به هم ریختگی کاراکترها در Notepad
+            var linkPart1 = 'https://aparat.com';
+            var linkPart2 = '/vt/frame?titleShow=false&recomShow=false';
             
-            let todaysCards = yearlyCardsData[dayOfYear];
+            // ۱. بارگذاری آی‌فریم ویدیو به صورت رسمی و استاندارد
+            playerContainer.innerHTML = '<iframe src="' + linkPart1 + videoData.code + linkPart2 + '" allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>';
+            
+            // ۲. تنظیم خودکار لینک دکمه دانلود مستقیم
+            downloadVideoBtn.setAttribute("href", videoData.download);
+            
+            // ۳. عملکرد کپی لینک ویدیو در حافظه
+            shareVideoBtn.onclick = function() {
+                navigator.clipboard.writeText(videoData.download);
+                alert("🔗 لینک ویدیو امروز با موفقیت کپی شد!");
+            };
 
-            // اگر دیتایی برای امروز نبود، ۴ کارت پیش‌فرض برای خالی نماندن سطر ساخته می‌شود
-            if (!todaysCards || todaysCards.length === 0) {
-                todaysCards = [
-                    { title: `نکته آموزشی امروز (خیاطی)`, desc: "با آموزشهای ما همراه شوید و هر روز بهتر شوید.", link: "#" },
-                    { title: `کارت دوم امروز (روز ${dayOfYear})`, desc: "توضیحات مربوط به بخش دوم اخبار روزانه.", link: "#" },
-                    { title: `کارت سوم امروز (روز ${dayOfYear})`, desc: "توضیحات مربوط به بخش سوم اخبار روزانه.", link: "#" },
-                    { title: `کارت چهارم امروز (روز ${dayOfYear})`, desc: "توضیحات مربوط به بخش چهارم اخبار روزانه.", link: "#" }
-                ];
+            // باز شدن پاپ‌آپ
+            modal.style.display = "flex";
+        } else {
+            alert("برای تاریخ امروز شمسی (" + dateKey + ") ویدیویی در لیست ثبت نشده است.");
+        }
+    });
+
+    // بستن پاپ‌آپ و قطع کامل صدای ویدیو
+    function hideModal() {
+        modal.style.display = "none";
+        playerContainer.innerHTML = ""; // تخلیه آی‌فریم برای جلوگیری از پخش صدا در پس‌زمینه
+    }
+
+    closeModalBtn.addEventListener("click", hideModal);
+
+    window.addEventListener("click", function(e) {
+        if (e.target === modal) {
+            hideModal();
+        }
+    });
+    document.getElementById("calendarMenu").addEventListener("click", function(e) {
+        e.preventDefault(); 
+        
+        var dateKey = getPersianDateKey(); 
+        var videoData = aparatVideos[dateKey]; 
+
+        if (videoData) {
+            // تفکیک آدرس برای جلوگیری از به هم ریختگی کاراکترها در Notepad
+            var linkPart1 = 'https://aparat.com';
+            var linkPart2 = '/vt/frame?titleShow=false&recomShow=false';
+            
+            // ۱. بارگذاری آی‌فریم ویدیو به صورت رسمی و استاندارد
+            playerContainer.innerHTML = '<iframe src="' + linkPart1 + videoData.code + linkPart2 + '" allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>';
+            
+            // ۲. تنظیم خودکار لینک دکمه دانلود مستقیم
+            downloadVideoBtn.setAttribute("href", videoData.download);
+            
+            // ۳. عملکرد کپی لینک ویدیو در حافظه
+            shareVideoBtn.onclick = function() {
+                navigator.clipboard.writeText(videoData.download);
+                alert("🔗 لینک ویدیو امروز با موفقیت کپی شد!");
+            };
+
+            // باز شدن پاپ‌آپ
+            modal.style.display = "flex";
+        } else {
+            alert("برای تاریخ امروز شمسی (" + dateKey + ") ویدیویی در لیست ثبت نشده است.");
+        }
+    });
+
+    // بستن پاپ‌آپ و قطع کامل صدای ویدیو
+    function hideModal() {
+        modal.style.display = "none";
+        playerContainer.innerHTML = ""; // تخلیه آی‌فریم برای جلوگیری از پخش صدا در پس‌زمینه
+    }
+
+    closeModalBtn.addEventListener("click", hideModal);
+
+    window.addEventListener("click", function(e) {
+        if (e.target === modal) {
+            hideModal();
+        }
+    });
+
+
+    // ۲. دیتای محصولات کاتالوگ
+    const myProducts = [
+        { id: 1, category: "stationery", name: "خودکار ژله‌ای پنتر بسته ۴ عددی", img: "خودکار.png", mainPrice: "۶۸,۰۰۰ تومان" },
+        { id: 2, category: "stationery", name: "دفتر سیمی ۱۰۰ برگ فانتزی طرح‌دار", img: "دفتر.png", mainPrice: "۴۵,۰۰۰ تومان" },
+        { id: 3, category: "confectionery", name: "قالب کیک تفلون کمربندی سایز ۲۴", img: "قالب.png", mainPrice: "۱۸۵,۰۰۰ تومان" }
+    ];
+
+    const gridContainer = document.getElementById('productsGrid');
+
+    // رندر خودکار محصولات کاتالوگ
+    if (gridContainer) {
+        myProducts.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'borosh-product-card';
+            card.setAttribute('data-cat', product.category);
+            
+            card.innerHTML = '\
+                <div class="borosh-product-img">\
+                    <img src="' + product.img + '" alt="' + product.name + '">\
+                </div> \
+                <div class="borosh-product-info"> \
+                    <h3 class="borosh-product-name">' + product.name + '</h3> \
+                    <div class="borosh-price-box">\
+                        <span class="borosh-main-price">' + product.mainPrice + '</span>\
+                    </div> \
+                    <a href="/checkout?add-to-cart=' + product.id + '" class="borosh-buy-btn">خرید کاتالوگ 🛒</a> \
+                </div>';
+            gridContainer.appendChild(card);
+        });
+    }
+
+    // ۳. مدیریت پاپ‌آپ‌های کشویی موبایل (Bottom Sheets)
+    const overlay = document.getElementById('boroshOverlay');
+    document.querySelectorAll('.borosh-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const sheet = this.nextElementSibling;
+                if (sheet && sheet.classList.contains('borosh-bottom-sheet')) {
+                    e.preventDefault();
+                    sheet.classList.add('open');
+                    if (overlay) overlay.classList.add('show');
+                }
             }
+        });
+    });
 
-            // تولید کدهای HTML خروجی
-            let htmlContent = '';
-            todaysCards.forEach(card => {
-                htmlContent += `
-                    <div class="card">
-                        <div>
-                            <h3>${card.title}</h3>
-                            <p>${card.desc}</p>
-                        </div>
-                        <a href="${card.link}" class="card-btn">مشاهده جزئیات</a>
-                    </div>
-                `;
+    document.querySelectorAll('.borosh-sheet-close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const sheet = this.closest('.borosh-bottom-sheet');
+            if (sheet) sheet.classList.remove('open');
+            if (overlay) overlay.classList.remove('show');
+        });
+    });
+
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            document.querySelectorAll('.borosh-bottom-sheet').forEach(sheet => sheet.classList.remove('open'));
+            overlay.classList.remove('show');
+        });
+    }
+
+    // ۴. سیستم فیلتر دکمه‌ای دسته‌بندی کاتالوگ
+    document.querySelectorAll('.borosh-filter-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const activeBtn = document.querySelector('.borosh-filter-btn.active');
+            if (activeBtn) activeBtn.classList.remove('active');
+            
+            this.classList.add('active');
+            const filterValue = this.getAttribute('data-filter');
+            
+            document.querySelectorAll('.borosh-product-card').forEach(card => {
+                if (filterValue === 'all' || card.getAttribute('data-cat') === filterValue) {
+                    card.classList.remove('hide');
+                } else {
+                    card.classList.add('hide');
+                }
             });
-            
-            container.innerHTML = htmlContent;
-        }
-
-        // اجرای سیستم با باز شدن صفحه
-        displayYearlyCards();
-    </script>
-
-</body>
-</html>
-
-  <script>
-    function closeMarquee() {
-      document.getElementById('marqueeBanner').style.display = 'none';
-    }
-  </script>
-
-  <!-- محتوای فرضی صفحه -->
-  <main class="main-content">
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نمایش کادر گرد روزانه</title>
-    
-    <style>
-        /* استایل کادر گرد شناور */
-        .toast-round {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #ff5722; /* رنگ نارنجی جذاب */
-            color: #fff;
-            width: 90px;
-            height: 90px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%; /* کاملاً دایره‌ای */
-            font-family: Tahoma, sans-serif;
-            font-size: 12px;
-            font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 9999;
-            text-align: center;
-            direction: rtl;
-            transition: opacity 0.5s, transform 0.3s;
-            opacity: 1;
-        }
-
-        /* افکت بزرگ شدن هنگام رفتن موس روی دایره */
-        .toast-round:hover {
-            transform: scale(1.1);
-            background-color: #e64a19;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- کادر گرد (به صورت پیش‌فرض پنهان است تا جاوا اسکریپت دیتای امروز را تزریق کند) -->
-    <a href="#" id="daily-toast" class="toast-round" style="display: none;"></a>
-
-    <script>
-        // ۱. تابع محاسبه دقیق شماره روز جاری از سال (۱ تا ۳۶۶)
-        function getDayOfYear() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = now - start;
-            const oneDay = 1000 * 60 * 60 * 24;
-            return Math.floor(diff / oneDay);
-        }
-
-        // ۲. لود کردن اطلاعات از فایل data.json و نمایش در کادر
-        window.addEventListener('DOMContentLoaded', () => {
-            const toastElement = document.getElementById('daily-toast');
-            const currentDay = getDayOfYear(); // دریافت شماره روز امسال
-
-            // فراخوانی فایل دیتایی که در نت‌پد ساختید
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    // پیدا کردن اطلاعات متناسب با روز سال
-                    const todayContent = data[currentDay - 1];
-
-                    if (toastElement && todayContent) {
-                        toastElement.href = todayContent.link; // قرار دادن لینک روز
-                        toastElement.innerText = todayContent.text; // قرار دادن متن روز
-                        toastElement.style.display = 'flex'; // نمایش کادر
-                        
-                        // ۳. محو شدن خودکار پس از ۱۰ ثانیه (اختیاری)
-                        setTimeout(() => {
-                            toastElement.style.opacity = '0';
-                            setTimeout(() => toastElement.remove(), 500);
-                        }, 10000);
-                    }
-                })
-                .catch(error => console.error('خطا در بارگذاری فایل دیتای روزانه:', error));
         });
-    </script>
+    });
 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تست کادر گرد روزانه</title>
-    
-    <style>
-        .toast-round {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #ff5722; 
-            color: #fff;
-            width: 95px;
-            height: 95px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%; 
-            font-family: Tahoma, sans-serif;
-            font-size: 13px;
-            font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 9999;
-            text-align: center;
-            direction: rtl;
-            transition: opacity 0.5s, transform 0.3s;
-            opacity: 1;
-        }
-        .toast-round:hover {
-            transform: scale(1.1);
-            background-color: #e64a19;
-        }
-    </style>
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تست کادر گرد با انیمیشن ورود</title>
-    
-    <style>
-        /* تعریف انیمیشن ورود (حرکت از پایین به بالا + زوم شدن) */
-        @keyframes popUp {
-            0% {
-                opacity: 0;
-                transform: translateY(50px) scale(0.5);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
+    // ۵. سیستم جستجوی هوشمند و همزمان کاتالوگ
+    const searchInput = document.getElementById('boroshSearchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchText = this.value.trim().toLowerCase();
+            const productCards = document.querySelectorAll('.borosh-product-card');
+            let hasResult = false;
 
-        .toast-round {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #ff5722; 
-            color: #fff;
-            width: 95px;
-            height: 95px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%; 
-            font-family: Tahoma, sans-serif;
-            font-size: 13px;
-            font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 9999;
-            text-align: center;
-            direction: rtl;
-            
-            /* اجرای انیمیشن ورود به مدت 0.6 ثانیه */
-            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            
-            /* افکت برای زمان رفتن موس روی دایره */
-            transition: opacity 0.5s, transform 0.3s;
-        }
+            document.querySelectorAll('.borosh-filter-btn').forEach(btn => btn.classList.remove('active'));
+            const allBtn = document.querySelector('[data-filter="all"]');
+            if (allBtn) allBtn.classList.add('active');
 
-        /* افکت بزرگ شدن هنگام رفتن موس روی دایره */
-        .toast-round:hover {
-            transform: scale(1.1) !important; /* کلمه important برای غلبه بر انیمیشن ورودی است */
-            background-color: #e64a19;
-        }
-    </style>
-</head>
-<body>
+            productCards.forEach(card => {
+                const productName = card.querySelector('.borosh-product-name').textContent.toLowerCase();
+                if (productName.includes(searchText)) {
+                    card.classList.remove('hide');
+                    hasResult = true;
+                } else {
+                    card.classList.add('hide');
+                }
+            });
 
-    <!-- کادر گرد روزانه -->
-    <a href="#" id="daily-toast" class="toast-round" style="display: none;"></a>
-
-    <script>
-        const dailyData = [
-            { "text": "تقویم تاریخ", "link": "https://site.com" },
-            { "text": "فایل روز ۲", "link": "https://site.com" },
-            { "text": "فایل روز ۳", "link": "https://site.com" },
-            { "text": "فایل روز ۴", "link": "https://site.com" }
-        ];
-
-        function getDayOfYear() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = now - start;
-            const oneDay = 1000 * 60 * 60 * 24;
-            return Math.floor(diff / oneDay);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const toastElement = document.getElementById('daily-toast');
-            const currentDay = getDayOfYear(); 
-
-            const index = (currentDay - 1) % dailyData.length;
-            const todayContent = dailyData[index];
-
-            if (toastElement && todayContent) {
-                toastElement.href = todayContent.link; 
-                toastElement.innerText = todayContent.text; 
-                toastElement.style.display = 'flex'; 
-                
-                // محو شدن خودکار پس از ۱۰ ثانیه
-                setTimeout(() => {
-                    toastElement.style.opacity = '0';
-                    setTimeout(() => toastElement.remove(), 500);
-                }, 10000);
+            let noResultMsg = document.getElementById('boroshNoResult');
+            if (!hasResult) {
+                if (!noResultMsg && gridContainer) {
+                    noResultMsg = document.createElement('div');
+                    noResultMsg.id = 'boroshNoResult';
+                    noResultMsg.style.cssText = 'grid-column:1/-1; text-align:center; padding:30px; color:#777; font-weight:bold;';
+                    noResultMsg.textContent = '❌ محصولی یافت نشد!';
+                    gridContainer.appendChild(noResultMsg);
+                }
+            } else if (noResultMsg) {
+                noResultMsg.remove();
             }
         });
-    </script>
-
+    }
+</script>
 </body>
-
 </html>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>شبکه مینیاتوری ۵ ستونه محصولات</title>
-  
-  <!-- فونت آیکون‌ها (FontAwesome) -->
-  <link rel="stylesheet" href="https://cloudflare.com">
-  
-  <style>
-    /* --------------------------------------------------
-       ۱. تنظیمات پایه و ریست قالب
-    -------------------------------------------------- */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      background-color: #568296;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      padding: 20px 10px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1400px; 
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-size: 16px;
-      color: #2d3436;
-      margin-bottom: 15px;
-      padding-right: 8px;
-      border-right: 3px solid #00b0ff;
-    }
-
-    /* --------------------------------------------------
-       ۲. استایل‌های شبکه ۵ ستونه فوق‌العاده کوچک
-    -------------------------------------------------- */
-    .mini-product-grid {
-      display: grid;
-      /* اجبار به داشتن ۵ ستون مساوی در دسکتاپ و تبلت‌های بزرگ */
-      grid-template-columns: repeat(5, 1fr); 
-      gap: 10px; /* فاصله بسیار کم برای جا شدن بهتر */
-    }
-
-    /* واکنش‌گرایی فقط برای موبایل و تبلت‌های کوچک */
-    @media (max-width: 768px) { .mini-product-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 480px) { .mini-product-grid { grid-template-columns: repeat(2, 1fr); } }
-
-    /* استایل کارت‌های بسیار کوچک (Micro Cards) */
-    .product-card-mini {
-      background: #ffffff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      border: 1px solid #eaeaea;
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    
-    
-      
-    }
-
-    /* کاهش شدید ارتفاع تصویر محصول */
-    .product-image-wrapper {
-      position: relative;
-      width: 100%;
-      height: 110px; /* عکس‌ها بسیار ظریف و کوچک شدند */
-      background-color: #fcfcfc;
-      overflow: hidden;
-    }
-
-    .product-image-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* دکمه لایک میکرو */
-    .wishlist-btn {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: rgba(255, 255, 255, 0.95);
-      border: none;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #888;
-      font-size: 11px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      z-index: 2;
-    }
-
-    .wishlist-btn.liked {
-      color: #ff4757;
-    }
-
-    /* بهینه‌سازی متن‌ها برای ابعاد کاملاً مینی */
-    .product-info {
-      padding: 8px; /* پدینگ فشرده */
-    }
-
-    .product-info h3 {
-      font-size: 12px; /* متن کاملاً ریز */
-      margin: 0 0 4px 0;
-      color: #ffffff;
-      font-weight: bold;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis; /* سه نقطه در صورت طولانی بودن عنوان */
-    }
-
-    .product-info p {
-      font-size: 10.5px;
-      color: #ffffff;
-      line-height: 1.4;
-      margin: 0 0 8px 0;
-      height: 30px; /* فقط ۲ خط متن کوتاه جای می‌گیرد */
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-
-    /* فوتر کارت مینی */
-    .product-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      height: 26px;
-      overflow: hidden;
-    }
-
-    .product-footer .price {
-      font-weight: 700;
-      color: #ffffff;
-      font-size: 11.5px;
-      transition: transform 0.2s ease;
-    }
-
-    /* دکمه سبد خرید بسیار ظریف */
-    .add-to-cart-btn {
-      background: #38bdf8;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 10.5px;
-      font-weight: bold;
-      position: absolute;
-      left: 0;
-      transform: translateY(32px);
-      opacity: 0;
-      transition: all 0.25s ease;
-    }
-	.add-to-cart-btn {
-  background: #0066ff;
-  color: #ffffff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: bold;
-  
-  /* تغییرات برای نمایش دائمی دکمه: */
-  position: relative; /* از حالت absolute به relative تغییر کرد */
-  transform: translateY(0) !important; /* لغو جابجایی به پایین */
-  opacity: 1 !important; /* نمایش دکمه با وضوح کامل */
-}
-
-/* ۱. اصلاح استایل بدنه اصلی کارت */
-.product-card-mini {
-  background-color: #565296 !important; /* واژه important! اجبار می‌کند که رنگ حتماً اعمال شود */
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-  border: 1px solid #e2e8f0;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-/* ۲. اطمینان از اینکه بخش اطلاعات محصول هم شفاف است و رنگ کارت را نشان می‌دهد */
-.product-info {
-  padding: 8px;
-  background: transparent !important; /* شفاف کردن این بخش تا رنگ بک‌گراند اصلی کارت دیده شود */
-}
-
-    }
-
-    
-      
-    }
-	
-  </style>
-</head>
-<body>
-
-<div class="main-title-container">
-  <h2 class="mega-title">خرید ویژه و تخفیفی</h2>
-</div>
-
-    
-    <section class="mini-product-grid">
-      
-      <!-- ردیف ۱ (۵ کارت اول) -->
-<div class="product-card-mini">
-  <div class="product-image-wrapper">
-    <img src="pyk.png" alt="محصول">
-    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-  </div>
-  <div class="product-info">
-    <h3>ساعت هوشمند مینی</h3>
-    <p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p>
-    <div class="product-footer">
-      <span class="price">۱,۴۵۰,۰۰۰ ت</span>
-      
-      <!-- اتصال هوشمند و بدون خطای روبیکا با لینک b2n -->
-      <a href="https://eitaa.com/az17010812" class="add-to-cart-btn" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-shopping-basket"></i>
-        <span>خرید</span>
-      </a>
-    </div> <!-- پایان product-footer -->
-  </div> <!-- پایان product-info -->
-</div> <!-- پایان product-card-mini -->
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>هدفون بی‌سیم</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۲,۳۰۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>پاوربانک فست</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۸۹۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>اسپیکر ضدآب</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۱,۲۰۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>مچ‌بند سلامتی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۴۵۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-
-      <!-- ردیف ۲ -->
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>کابل شارژ کنفی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۹۵,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>هاب یو‌اس‌بی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۳۲۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>ماوس بی‌سیم</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۱۸۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>کیبورد مینی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۶۵۰,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-      <div class="product-card-mini"><div class="product-image-wrapper"><img src="https://picsum.photos0" alt="محصول"><button class="wishlist-btn"><i class="far fa-heart"></i></button></div><div class="product-info"><h3>پد ماوس طبی</h3><p>توضیح کوتاه و فشرده محصول در این قسمت قرار دارد.</p><div class="product-footer"><span class="price">۷۵,۰۰۰ ت</span><button class="add-to-cart-btn"><i class="fas fa-shopping-basket"></i><span>خرید</span></button></div></div></div>
-	  
-
-      <!-- نکته: کدهای ردیف ۳ و ۴ و ۵ را برای خلاصه شدن متن فاکتور گرفتم، شما می‌توانید همین بلوک‌ها را کپی کنید تا ۲۵ تا کامل شود -->
-
-<style>
-/* کانتینر اصلی تیتر برای وسط‌چین کردن کل مجموعه */
-.main-title-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* تراز کردن آیتم‌ها در وسط */
-  text-align: center; /* وسط‌چین کردن متن‌ها */
-  margin-top: 50px; /* فاصله از کارت‌های بزرگ بالایی */
-  margin-bottom: 40px; /* فاصله از کارت‌های کوچک پایینی */
-  width: 100%;
-  direction: rtl;
-}
-
-/* تیتر بزرگ اصلی */
-.mega-title {
-  font-size: 25px; /* سایز بزرگ و چشم‌گیر */
-  font-weight: 600;
-  color: #ffffff; /* رنگ سفید هماهنگ با پس‌زمینه سایت شما */
-  position: relative;
-  display: inline-block;
-  padding-bottom: 14px;
-  letter-spacing: -0.5px;
-}
-
-}
-
-</style>
