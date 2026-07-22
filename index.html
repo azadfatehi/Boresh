@@ -134,88 +134,87 @@
             </div>
         </div>
 
-        <nav class="borosh-nav">
-            <div class="borosh-item"><a href="#" id="learnMenu" class="borosh-link">آموزش</a>
-                <div class="borosh-bottom-sheet">
-                    <div class="borosh-sheet-header"><span class="borosh-sheet-title">لوازم التحریر</span><span class="borosh-sheet-close">✕</span></div>
-                </div>
-            </div>
-<div class="borosh-item">
-  <span class="borosh-link">کانال های منتخب ▾</span>
-  <div class="borosh-bottom-sheet">
-    <div class="borosh-sheet-header">
-      <span class="borosh-sheet-title">خبر</span>
-      <span class="borosh-sheet-close">✕</span>
-	</div>
-    <ul class="borosh-sheet-content">
-      <!-- دکمه بازگشت -->
-      <li>
-        <a href="#" class="borosh-sheet-close" style="color: #e74c3c; font-weight: bold;">⬅️ بازگشت به سایت</a>
-      </li>
-      
-      <!-- کانال اول: اصفهان ما -->
-      <li>
-        <a href="https://eitaa.com/view.html?id=axs_peykaniha">عکس پیکانی‌ها</a>
-      
-      <!-- کانال دوم: عکس پیکانی‌ها (آیدی جدید شما) -->
-      </li>
-		<li>
-        <a href="https://eitaa.com/view.html?id=esfahan_ma">اصفهان ما</a>
-      </li>
-      
-      <!-- کانال سوم -->
-      <li>
-        <a href="https://eitaa.com/view.html?id=axs_peykaniha">عکس پیکانی‌ها</a>
-      </li>
-			</ul>
+<nav class="borosh-nav">
+  <!-- بخش آموزش -->
+  <div class="borosh-item">
+    <a href="#" id="learnMenu" class="borosh-link">آموزش</a>
+    <div class="borosh-bottom-sheet">
+      <div class="borosh-sheet-header">
+        <span class="borosh-sheet-title">لوازم التحریر</span>
+        <span class="borosh-sheet-close">✕</span>
+      </div>
+    </div>
   </div>
-</div>
-            <div class="borosh-item"><a href="#" id="calendarMenu" class="borosh-link">تقویم تاریخ</a></div>
-			<!-- ۱. بخش دکمه اصلی (متن فیلم و سریال شما) -->
-<div class="borosh-item">
-    <!-- با کلیک روی این لینک، تابع باز کردن باکس اجرا می‌شود -->
-</div>
-		<div>
-    <a href="javascript:void(0);" onclick="openMoviePage()" class="borosh-link">فیلم و سریال</a>
-</div>
 
-<!-- ۲. باکس مخفی تمام‌صفحه مخصوص نمایش لایه فیلم (به چیدمان اصلی آسیب نمی‌زند) -->
-<div id="movieOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 999999; overflow: hidden;">
-    
-    <!-- دکمه بستن و بازگشت به سایت شما (بسیار مهم برای تجربه کاربری موبایل) -->
+  <!-- بخش کانال های منتخب -->
+  <div class="borosh-item">
+    <span class="borosh-link">کانال های منتخب ▾</span>
+    <div class="borosh-bottom-sheet">
+      <div class="borosh-sheet-header">
+        <span class="borosh-sheet-title">خبر</span>
+        <span class="borosh-sheet-close">✕</span>
+      </div>
+      <ul class="borosh-sheet-content">
+        <!-- دکمه بازگشت -->
+        <li>
+          <a href="#" class="borosh-sheet-close" style="color: #e74c3c; font-weight: bold;">⬅️ بازگشت به سایت</a>
+        </li>
+        <!-- کانال اول: عکس پیکانی‌ها -->
+        <li>
+          <a href="https://eitaa.com/view.html?id=axs_peykaniha">عکس پیکانی‌ها</a>
+        </li>
+        <!-- کانال دوم: اصفهان ما -->
+        <li>
+          <a href="https://eitaa.com/view.html?id=esfahan_ma">اصفهان ما</a>
+        </li>
+        <!-- کانال سوم -->
+        <li>
+          <a href="https://eitaa.com/view.html?id=axs_peykaniha">عکس پیکانی‌ها</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- بخش تقویم تاریخ -->
+  <div class="borosh-item">
+    <a href="#" id="calendarMenu" class="borosh-link">تقویم تاریخ</a>
+  </div>
+
+  <!-- بخش فیلم و سریال -->
+  <div class="borosh-item">
+    <a href="javascript:void(0);" onclick="openMoviePage()" class="borosh-link">فیلم و سریال</a>
+  </div>
+
+  <!-- باکس مخفی تمام‌صفحه فیلم و سریال -->
+  <div id="movieOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 999999; overflow: hidden;">
+    <!-- دکمه بستن -->
     <button onclick="closeMoviePage()" style="position: absolute; top: 15px; right: 15px; z-index: 1000000; background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 10px 15px; border-radius: 20px; font-family: tahoma; font-size: 14px; cursor: pointer; backdrop-filter: blur(5px);">
         *بازگشت به برش*
     </button>
-    
-    <!-- آی‌فریم بارگذاری سایت مقصد با دسترسی کامل برای پخش ویدیوها -->
+    <!-- آی‌فریم بارگذاری سایت مقصد -->
     <iframe id="movieFrame" src="" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
-</div>
+  </div>
 
-<!-- ۳. کدهای جاوااسکریپت جهت مدیریت لمس و باز شدن صفحه -->
-<script>
-function openMoviePage() {
-    // ۱. آدرس سایت مقصد را به آی‌فریم تزریق می‌کند
-    document.getElementById('movieFrame').src = "https://hamahang.net";
-    // ۲. باکس تمام‌صفحه را نمایش می‌دهد
-    document.getElementById('movieOverlay').style.display = "block";
-    // ۳. اسکرول صفحه اصلی پشت باکس را قفل می‌کند تا چیدمان تکان نخورد
-    document.body.style.overflow = "hidden";
-}
+  <!-- اسکریپت مدیریت فیلم و سریال -->
+  <script>
+  function openMoviePage() {
+      document.getElementById('movieFrame').src = "https://hamahang.net";
+      document.getElementById('movieOverlay').style.display = "block";
+      document.body.style.overflow = "hidden";
+  }
 
-function closeMoviePage() {
-    // ۱. باکس را دوباره مخفی می‌کند
-    document.getElementById('movieOverlay').style.display = "none";
-    // ۲. آدرس آی‌فریم را خالی می‌کند تا مصرف اینترنت و ویدیو قطع شود
-    document.getElementById('movieFrame').src = "";
-    // ۳. اسکرول صفحه اصلی را به حالت عادی برمی‌گرداند
-    document.body.style.overflow = "auto";
-}
-</script>
+  function closeMoviePage() {
+      document.getElementById('movieOverlay').style.display = "none";
+      document.getElementById('movieFrame').src = "";
+      document.body.style.overflow = "auto";
+  }
+  </script>
 
-            <div class="borosh-item"><a href="/catalog/others" class="borosh-link">سایر</a></div>
-        </nav>
-    </div>
-
+  <!-- بخش سایر -->
+  <div class="borosh-item">
+    <a href="/catalog/others" class="borosh-link">سایر</a>
+  </div>
+</nav>
     <div class="borosh-catalog-container">
         <h2 class="borosh-catalog-title">کاتالوگ و خرید محصولات</h2>
         <div class="borosh-filter-bar">
