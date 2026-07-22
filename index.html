@@ -141,39 +141,49 @@
                 </div>
             </div>
 <div class="borosh-item">
-    <span class="borosh-link">کانال های منتخب ▾</span>
-    <div class="borosh-bottom-sheet">
-        <div class="borosh-sheet-header">
-            <span class="borosh-sheet-title">خبر</span>
-            <span class="borosh-sheet-close">✕</span>
-        </div>
-        <ul class="borosh-sheet-content">
-            
-            <!-- دکمه بازگشت برای بستن منوی کشویی بدون تغییر چیدمان سایت -->
-            <li>
-                <a href="#" class="borosh-sheet-close" style="color: #e74c3c; font-weight: bold;">⬅️ بازگشت به سایت</a>
-            </li>
-
-            <!-- کانال اول: اصفهان ما (ورود مستقیم و بدون خطای حدود بلنک) -->
-<!-- کانال اول: هدایت مستقیم به اپلیکیشن برای آیدی عمومی -->
-<!-- روش استاندارد اندروید برای باز کردن مستقیم اپلیکیشن ایتا -->
-<li>
-  <a href="intent://mention?username=esfahan_ma#Intent;scheme=eitaa;package=ir.eitaa.messenger;end">اصفهان ما</a>
-</li>
-
-            <!-- کانال دوم: آیدی کانال دوم خود را بعد از علامت @ بنویسید -->
-            <li>
-                <a href="https://eitaa.com" target="_blank" rel="noopener noreferrer">نام کانال دوم</a>
-            </li>
-
-            <!-- کانال سوم: آیدی کانال سوم خود را بعد از علامت @ بنویسید -->
-            <li>
-                <a href="https://eitaa.com" target="_blank" rel="noopener noreferrer">نام کانال سوم</a>
-            </li>
-
-        </ul>
+<div class="borosh-item">
+  <span class="borosh-link">کانال های منتخب ▾</span>
+  <div class="borosh-bottom-sheet">
+    <div class="borosh-sheet-header">
+      <span class="borosh-sheet-title">خبر</span>
+      <span class="borosh-sheet-close">✕</span>
     </div>
+    <ul class="borosh-sheet-content">
+      <!-- دکمه بازگشت -->
+      <li>
+        <a href="#" class="borosh-sheet-close" style="color: #e74c3c; font-weight: bold;">⬅️ بازگشت به سایت</a>
+      </li>
+      
+      <!-- کانال اول: اصفهان ما -->
+      <li>
+        <a href="#" onclick="openEitaa('esfahan_ma'); return false;">اصفهان ما</a>
+      </li>
+      
+      <!-- کانال دوم (جایگزین کردن آیدی به جای channel_id_2) -->
+      <li>
+        <a href="#" onclick="openEitaa('channel_id_2'); return false;">نام کانال دوم</a>
+      </li>
+      
+      <!-- کانال سوم (جایگزین کردن آیدی به جای channel_id_3) -->
+      <li>
+        <a href="#" onclick="openEitaa('channel_id_3'); return false;">نام کانال سوم</a>
+      </li>
+    </ul>
+  </div>
 </div>
+
+<!-- اسکریپت هوشمند برای باز کردن مستقیم اپلیکیشن -->
+<script>
+function openEitaa(username) {
+    // تلاش برای باز کردن مستقیم اپلیکیشن با پروتکل داخلی
+    window.location.href = "eitaa://mention?username=" + username;
+    
+    // اگر بعد از نیم ثانیه اپلیکیشن باز نشد، از طریق وب بدون رفتن به گوگل پلی هدایت میکند
+    setTimeout(function() {
+        window.location.href = "https://eitaa.com/" + username;
+    }, 500);
+}
+</script>
             <div class="borosh-item"><a href="#" id="calendarMenu" class="borosh-link">تقویم تاریخ</a></div>
 			<!-- ۱. بخش دکمه اصلی (متن فیلم و سریال شما) -->
 <div class="borosh-item">
